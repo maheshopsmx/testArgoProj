@@ -25,7 +25,6 @@ spec:
       prePromotionAnalysis:
         templates:
         - templateName: isd-analysis-bg-v1
-        - templateName: load-executor-job
         args:
         - name: baseline-hash
           valueFrom:
