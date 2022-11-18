@@ -38,4 +38,4 @@ resources:
 - visibility-rollout.yaml
 - visibility-service-preview.yaml
 - visibility-service-stable.yaml
-- deployment.yaml
+- load-executor-job.yaml
