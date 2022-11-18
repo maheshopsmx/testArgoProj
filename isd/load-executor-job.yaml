@@ -5,6 +5,7 @@ metadata:
 spec:
   metrics:
     - name: test
+      initialDelay: 120s
       provider:
         job:
           spec:
