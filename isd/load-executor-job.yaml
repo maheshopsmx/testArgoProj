@@ -23,8 +23,8 @@ spec:
                   name: curl
                   args:
                    - >-
-                          jobname=Dev-triggered-by-argocd;
-                          curl -s -i -u $secret -X POST "https://jenkins.opsmx.net:8181/jenkins/job/$jobname/build?token=argocd-jenkins-token" -o /tmp/temp.out ; 
+                          jobname=Dev-API-Automation-Test-Argo;
+                          curl -s -i -u $secret -X POST "https://jenkins.opsmx.net:8181/jenkins/job/$jobname/buildWithParameters?token=argo-devapi-token" -o /tmp/temp.out ;
                           if [  $? -eq 0 ];
                            then echo build succeeded;
                            else echo build failed; exit 1;
