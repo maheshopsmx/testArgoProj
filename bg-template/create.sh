@@ -59,3 +59,9 @@ rm -rf *.txt
 echo Successfully created secret, service, rollout and template yaml files
 
 echo please add $mydir to your github repo and create an argocd application from the argocd ui at $argocdhost
+
+echo cp -R "$mydir" <mygithubrepo>/"$mydir"
+echo cd <mygithubrepo>
+echo git add -A
+echo git commit -m "my message"
+echo git push
