@@ -17,18 +17,23 @@ fi
 
 ingithubimage=$( cat rollout.yaml | grep image: | head -1 | awk '{print $NF}')
 
-inroimage=$( kubectl -n $rons get rollout multins-bg -o jsonpath='{.spec.template.spec.containers[0].image}')
-if [ -z $inroimage ]; then echo 'error: could find rollout multins-bg, are you sure you are using the right namespace'  ; exit 1; fi
+echo image in github is $ingithubimage
+
+inpodimage=$( kubectl -n $rons get po | grep Running | awk '{print $1}' | xargs kubectl -n $rons get po -o jsonpath='{.spec.containers[0].image}')
+
+if [ -z $inpodimage ]; then echo 'error: could find rollout multins-bg, are you sure you are using the right namespace'  ; exit 1; fi
+
+echo $inpodimage in the pod
 
 echo docker.io/opsmxdev/issuegen:v3.0.6 >images.txt
 echo docker.io/opsmxdev/issuegen:v3.0.7 >>images.txt
 echo docker.io/opsmxdev/issuegen:v3.0.8 >>images.txt
 
-newimage=$(cat images.txt | grep -v $inroimage | grep -v $ingithubimage| head -1)
+newimage=$(cat images.txt | grep -v $inpodimage | grep -v $ingithubimage| head -1)
 
 echo $newimage
 
-sed -i "s#$inroimage#$newimage#" rollout.yaml
+sed -i "s#$ingithubimage#$newimage#" rollout.yaml
 
 rm -rf images.txt
 
