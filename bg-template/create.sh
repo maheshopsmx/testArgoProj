@@ -30,9 +30,9 @@ echo creating folder $mydir
 mkdir -p $mydir
 cp *.yaml $mydir
 cp services.txt $mydir
-cp trigger-analysis.sh $mydir
 cd $mydir 
 
+curl https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-template/trigger-analysis.sh -o trigger-analysis.sh
 
 echo creating rollout
 
@@ -84,6 +84,13 @@ git push
 echo creating application in argocd
 kubectl -n $isdns create -f application.yaml
 
-echo login to argocd host $argocdhost and look for application $mydir
+rm -rf application.yaml
+
+git add -A
+git commit -m "deleted the application yaml"
+git push
+
+
+echo login to argocd host $argocdhost and look for application $mydir and sunc it
 
 echo 'to trigger analysis run go to the folder $mydir in your local github repo and run ./trigger-analysis.sh <namespace where this rollout was deployed> '
