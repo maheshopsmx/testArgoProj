@@ -53,6 +53,9 @@ done < deploys.txt
 
 argocdhost=$( kubectl -n $isdns get ing argocd-ingress -o jsonpath='{.spec.rules[0].host}')
 
+echo cleaning up
+rm -rf *.txt
+
 echo Successfully created secret, service, rollout and template yaml files
 
 echo please add $mydir to your github repo and create an argocd application from the argocd ui at $argocdhost
