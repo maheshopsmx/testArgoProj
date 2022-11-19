@@ -25,7 +25,7 @@ chmod +x start.sh
 6. git push
 
 
-7. for each application which needs analysis, please use only alphabets in lower case as arguments 
+7. for each application which needs analysis, please use only alphabets in lower case and numbers as arguments 
 run
 ./create.sh <applicationName> <stable-ns> <preview-ns> <isd-ns>
 

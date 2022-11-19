@@ -30,8 +30,9 @@ echo creating folder $mydir
 mkdir -p $mydir
 cp *.yaml $mydir
 cp services.txt $mydir
-cd $mydir 
 cp trigger-analysis.sh $mydir
+cd $mydir 
+
 
 echo creating rollout
 
@@ -65,7 +66,7 @@ repourl=$(git config --get remote.origin.url)
 
 echo application yaml from template
 sed -i "s/APP-NAME/$mydir/" application.yaml
-sed -i "s#REPO-YRL#$repourl#" application.yaml
+sed -i "s#GIT-REPO#$repourl#" application.yaml
 
 echo cleaning up
 rm -rf *.txt
@@ -85,4 +86,4 @@ kubectl -n $isdns create -f application.yaml
 
 echo login to argocd host $argocdhost and look for application $mydir
 
-echo to trigger analysis run go to the folder $mydir in your local github repo and run ./trigger-analysis.sh <namespace where this rollout was deployed>
+echo 'to trigger analysis run go to the folder $mydir in your local github repo and run ./trigger-analysis.sh <namespace where this rollout was deployed> '
