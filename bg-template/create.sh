@@ -24,6 +24,7 @@ mkdir -p $mydir
 cp *.yaml $mydir
 cp services.txt $mydir
 cd $mydir 
+cp trigger-analysis.sh $mydir
 
 echo creating rollout
 
@@ -58,10 +59,12 @@ rm -rf *.txt
 
 echo Successfully created secret, service, rollout and template yaml files
 
-echo please add $mydir to your github repo and create an argocd application from the argocd ui at $argocdhost
+echo please add/commit/push  $mydir to your github repo and create an argocd application from the argocd ui at $argocdhost
 
 echo cp -R "$mydir" <mygithubrepo>/"$mydir"
 echo cd <mygithubrepo>
 echo git add -A
 echo git commit -m "my message"
 echo git push
+
+echo to trigger analysis run go to the folder $mydir in your local github repo and run ./trigger-analysis.sh <namespace where this rollout was deployed>

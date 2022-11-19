@@ -9,7 +9,7 @@ deployments in both stable and preview namespaces with the full deployment of th
 a working iSD+argo installation in the same cluster, with prometheus, elasticsearch, kibana with ingress for isdui and isd argocd
 
 Steps:
-curl -o https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-template/start.sh
+curl https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-template/start.sh -o start.sh
 chmod +x start.sh
 ./start.sh
 
@@ -22,6 +22,10 @@ applicationName = usersupplied name, with which a folder is created which needs 
 stable-ns: namespace where the stable version of application is running
 preview-ns: namespace  where the version being previewed before promoting as stable exists
 isd-ns: namespace hwre isd is installed
+
+After the argocd application is created and syched to start an analysis, gt to github repo, to the folder wher ethe code was committed 
+and run
+./trigger-analysis.sh <namespace-where-the-roloout-was-deployed>
 
 
 
