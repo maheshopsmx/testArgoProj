@@ -2,19 +2,30 @@ Instructions to create blue green analysis resources
 
 Pre-requisites:
 
-curl
-kubectl 
-connection via kubeconfig to the cluster on which both stable and preview namespaces exist
-deployments in both stable and preview namespaces with the full deployment of the application
-a working iSD+argo installation in the same cluster, with prometheus, elasticsearch, kibana with ingress for isdui and isd argocd
+curl - check using curl --help
+kubectl - check using kubectl --help
+connection via kubeconfig to the cluster on which both stable and preview namespaces exist - check using kubectl get ns
+deployments in both stable and preview namespaces with the full deployment of the application - check using kubectl -n <stablens> get deploy
+a working iSD+argo installation in the same cluster, with prometheus, elasticsearch, kibana with ingress for isdui and isd argocd - check using kubectl -n <isdns> get po
+a github repo, if you dont have a repo create a new one 
+access to argocd ui check using kubectl -n <isdns> get ing argocd-ingress -o jsonpath='{.spec.rules[0].host}' , use a browser to login to the ui
+add the github repo  to argocd https://argo-cd.readthedocs.io/en/stable/user-guide/private-repositories/ by going to 
 
 Steps:
+1. clone the github repo that was added to argocd to your local machine, run
+git clone <repourl>
+2. cd into the repo root directory, run
+cd <mygithubreponame>
+3. this will download the template files and scripts to create the required files which need to be committed
 curl https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-template/start.sh -o start.sh
 chmod +x start.sh
 ./start.sh
+4. git add -A
+5. git commit -m "adding templates"
+6. git push
 
-this will download the template files and scripts to create the required files which need to be committed
 
+7. for each application which needs analysis, please use only alphabets in lower case as arguments 
 run
 ./create.sh <applicationName> <stable-ns> <preview-ns> <isd-ns>
 
@@ -23,7 +34,8 @@ stable-ns: namespace where the stable version of application is running
 preview-ns: namespace  where the version being previewed before promoting as stable exists
 isd-ns: namespace hwre isd is installed
 
-After the argocd application is created and syched to start an analysis, gt to github repo, to the folder wher ethe code was committed 
+8. for each time you updated the preview namespace with new images
+After the argocd application is created and syched to start an analysis, go to github repo, to the folder where the code was committed 
 and run
 ./trigger-analysis.sh <namespace-where-the-roloout-was-deployed>
 

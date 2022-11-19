@@ -1,5 +1,5 @@
 #!/bin/bash
-mydir=$1 # a folder and a namespace will be created using this
+mydir=$1 # a folder an application and a namespace will be created using this
 bns=$2 # baseline namespace
 pns=$3 # preview namespace
 isdns=$4 # isd namespace
@@ -16,6 +16,13 @@ kubectl version
 if [ $? != 0 ]
 then
 echo $instructions; 
+exit 1
+fi
+
+git rev-parse --is-inside-work-tree
+if [ $? != 0 ]
+then
+echo this command must be run inside the folder which is part of github repo which was used to deploy to argocd; 
 exit 1
 fi
 
@@ -54,17 +61,28 @@ done < deploys.txt
 
 argocdhost=$( kubectl -n $isdns get ing argocd-ingress -o jsonpath='{.spec.rules[0].host}')
 
+repourl=$(git config --get remote.origin.url)
+
+echo application yaml from template
+sed -i "s/APP-NAME/$mydir/" application.yaml
+sed -i "s#REPO-YRL#$repourl#" application.yaml
+
 echo cleaning up
 rm -rf *.txt
 
-echo Successfully created secret, service, rollout and template yaml files
+echo Successfully created application, secret, service, rollout and template yaml files
+echo
+echo please review template.yaml and remove any unneeded services from the services section
+echo
+echo  add/commit/push  $mydir to your github repo and create an argocd application from the argocd ui at $argocdhost
 
-echo please add/commit/push  $mydir to your github repo and create an argocd application from the argocd ui at $argocdhost
+git add -A
+git commit -m "added the application $mydir"
+git push
 
-echo cp -R "$mydir" <mygithubrepo>/"$mydir"
-echo cd <mygithubrepo>
-echo git add -A
-echo git commit -m "my message"
-echo git push
+echo creating application in argocd
+kubectl -n $isdns create -f application.yaml
+
+echo login to argocd host $argocdhost and look for application $mydir
 
 echo to trigger analysis run go to the folder $mydir in your local github repo and run ./trigger-analysis.sh <namespace where this rollout was deployed>
