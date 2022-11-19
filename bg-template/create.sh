@@ -4,7 +4,7 @@ bns=$2 # baseline namespace
 pns=$3 # preview namespace
 isdns=$4 # isd namespace
 instructions=' error: you need to be connected to the kubernetes cluster to get this script to work '
-usage='error: Usage: ./create.sh directoryname baseline-namesapce canary-namespace isd-namespace'
+usage='error: Usage: ./create.sh directoryname baseline-namesapce canary-namespace'
 
 if [ -z $mydir ]; then echo $usage; exit 1; fi
 if [ -z $pns ]; then  echo $usage; exit 1; fi
@@ -45,15 +45,14 @@ kubectl -n "$bns" get deploy -o name  | grep deployment | sed 's/\// /' | awk '{
 kubectl -n "$pns" get deploy -o name  | grep deployment | sed 's/\// /' | awk '{print $2}' > previewdeploys.txt
  if [ ! -s previewdeploys.txt ]; then echo error: no deployments found in namespace $pns; exit 1 ; fi
 
-
-
-
 while read line 
  do 
 echo adding service $line to template
 sed "s/SERVICENAME/$line/g" services.txt >> template.yaml 
 done < deploys.txt
 
-echo Successfully created service, rollout and template yaml files
+argocdhost=$( kubectl -n $isdns get ing argocd-ingress -o jsonpath='{.spec.rules[0].host}')
 
-echo please add $mydir to your github repo and create an argocd application.
+echo Successfully created secret, service, rollout and template yaml files
+
+echo please add $mydir to your github repo and create an argocd application from the argocd ui at $argocdhost
