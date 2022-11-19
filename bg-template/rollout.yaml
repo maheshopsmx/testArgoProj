@@ -34,5 +34,3 @@ spec:
           value: BASELINE-NAMESPACE
         - name: preview-ns
           value: PREVIEW-NAMESPACE
-        - name: label-app
-          value: LABEL_APP

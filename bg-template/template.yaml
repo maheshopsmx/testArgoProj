@@ -6,7 +6,6 @@ spec:
   args:
         - name: baseline-ns
         - name: preview-ns
-        - name: label-app
   metrics:
     - name: isd
       count: 1

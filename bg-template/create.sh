@@ -2,14 +2,14 @@
 mydir=$1 # a folder and a namespace will be created using this
 bns=$2 # baseline namespace
 pns=$3 # preview namespace
-labelapp=$4 # the value of the label metadata.label.app
+isdns=$4 # isd namespace
 instructions=' error: you need to be connected to the kubernetes cluster to get this script to work '
-usage='error: Usage: ./create.sh directoryname baseline-namesapce canary-namespace app-label-value'
+usage='error: Usage: ./create.sh directoryname baseline-namesapce canary-namespace'
 
 if [ -z $mydir ]; then echo $usage; exit 1; fi
 if [ -z $pns ]; then  echo $usage; exit 1; fi
 if [ -z $bns ]; then  echo $usage; exit 1; fi
-if [ -z $labelapp ]; then  echo $usage; exit 1; fi
+if [ -z $isdns ]; then  echo $usage; exit 1; fi
 
 kubectl version
 
@@ -29,15 +29,23 @@ echo creating rollout
 
 sed -i "s/BASELINE-NAMESPACE/$bns/" rollout.yaml
 sed -i "s/PREVIEW-NAMESPACE/$pns/" rollout.yaml
-sed -i "s/LABEL-APP/$labelapp/" rollout.yaml
+
+echo creating secret
+
+isdhost=$( kubectl -n $isdns get ing oes-ui-ingress -o jsonpath='{.spec.rules[0].host}')
+ if [ -z $isdhost ]; then  echo isd ingress not found, are you sure isd in installed in $isdns; exit 1; fi
+
+sed -i "s#GATE-URL#$isdhost#" secret.yaml
 
 echo creating analysis template
 
-kubectl -n "$bns" get deploy -o name -l app="$labelapp" | grep deployment | sed 's/\// /' | awk '{print $2}' > deploys.txt
+kubectl -n "$bns" get deploy -o name  | grep deployment | sed 's/\// /' | awk '{print $2}' > deploys.txt
  if [ ! -s deploys.txt ]; then echo error: no deployments found in namespace $bns; exit 1 ; fi
 
-kubectl -n "$pns" get deploy -o name -l app="$labelapp" | grep deployment | sed 's/\// /' | awk '{print $2}' > previewdeploys.txt
+kubectl -n "$pns" get deploy -o name  | grep deployment | sed 's/\// /' | awk '{print $2}' > previewdeploys.txt
  if [ ! -s previewdeploys.txt ]; then echo error: no deployments found in namespace $pns; exit 1 ; fi
+
+
 
 
 while read line 
@@ -48,7 +56,4 @@ done < deploys.txt
 
 echo Successfully created service, rollout and template yaml files
 
-#kubectl create ns $mydir
-#kubectl -n $mydir create -f rollout.yaml
-#kubectl $mydir create -f template.yaml
-#kubectl $mydir create -f service.yaml
+echo please add $mydir to your github repo and create an argocd application.

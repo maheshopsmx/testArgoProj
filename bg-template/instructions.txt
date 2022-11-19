@@ -1,0 +1,28 @@
+Instructions to create blue green analysis resources
+
+Pre-requisites:
+
+curl
+kubectl 
+connection via kubeconfig to the cluster on which both stable and preview namespaces exist
+deployments in both stable and preview namespaces with the full deployment of the application
+a working iSD+argo installation in the same cluster, with prometheus, elasticsearch, kibana with ingress for isdui and isd argocd
+
+Steps:
+curl -o https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-template/start.sh
+chmod +x start.sh
+./start.sh
+
+this will download the template files and scripts to create the required files which need to be committed
+
+run
+./create.sh <applicationName> <stable-ns> <preview-ns> <isd-ns>
+
+applicationName = usersupplied name, with which a folder is created which needs to be later committed to a github repo, and an argocd application needs to be created
+stable-ns: namespace where the stable version of application is running
+preview-ns: namespace  where the version being previewed before promoting as stable exists
+isd-ns: namespace hwre isd is installed
+
+
+
+
