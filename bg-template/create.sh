@@ -4,7 +4,7 @@ bns=$2 # baseline namespace
 pns=$3 # preview namespace
 isdns=$4 # isd namespace
 instructions=' error: you need to be connected to the kubernetes cluster to get this script to work '
-usage='error: Usage: ./create.sh directoryname baseline-namesapce canary-namespace'
+usage='error: Usage: ./create.sh directoryname baseline-namesapce canary-namespace isd-namespace'
 
 if [ -z $mydir ]; then echo $usage; exit 1; fi
 if [ -z $pns ]; then  echo $usage; exit 1; fi
