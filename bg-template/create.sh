@@ -28,6 +28,8 @@ fi
 
 echo creating folder $mydir
 mkdir -p $mydir
+rm -rf $mydir/*.yaml
+rm -rf $mydir/*.sh
 cp *.yaml $mydir
 cp services.txt $mydir
 cd $mydir 
@@ -77,18 +79,20 @@ echo please review template.yaml and remove any unneeded services from the servi
 echo
 echo  add/commit/push  $mydir to your github repo and create an argocd application from the argocd ui at $argocdhost
 
-git add -A
+git add rollout.yaml
+git add secret.yaml
+git add service.yaml
+git add template.yaml
+git add trigger-analysis.sh
+
 git commit -m "added the application $mydir"
 git push
 
 echo creating application in argocd
-kubectl -n $isdns create -f application.yaml
+kubectl -n $isdns apply -f application.yaml
 
 rm -rf application.yaml
 
-git add -A
-git commit -m "deleted the application yaml"
-git push
 
 
 echo login to argocd host $argocdhost and look for application $mydir and sunc it
