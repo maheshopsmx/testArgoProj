@@ -9,7 +9,7 @@ kubectl - check using kubectl --help
 connection via kubeconfig to the cluster on which both stable and preview namespaces exist - check using kubectl get ns
 deployments in both stable and preview namespaces with the full deployment of the application - check using kubectl -n <stablens> get deploy and kubectl -n <previewns> get deploy
 a working iSD+argo installation in the same cluster, with prometheus, elasticsearch, kibana with ingress for isdui and isd argocd - check using kubectl -n <isdns> get po
-a github repo, create a new repo in github 
+a github repo, create a new repo in github with a Readme.md file
 access to argocd ui, check - kubectl -n <isdns> get ing argocd-ingress -o jsonpath='{.spec.rules[0].host}' , use a browser to login to the ui
 add the github repo  to argocd using instructions here https://argo-cd.readthedocs.io/en/stable/user-guide/private-repositories/ 
 
@@ -34,6 +34,7 @@ Steps:
 1. cd to the root folder of the repo created in Section A
 2. for each application which needs analysis,  
 run
+chmod +x create.sh
 ./create.sh <applicationName> <stable-ns> <preview-ns> <isd-ns>
 
 applicationName = usersupplied name, with which a folder is created which will be later committed to this github repo, a namespace and an argocd application will be created
@@ -51,10 +52,12 @@ Pre-requisites:
 Section B is completed
 the argocd application is created and synched
 all pods are up and running in both baseline and canary namespace
+review template.yaml and remove any unneeded services from the services section and add/commit/push to github repo
 
 1. go to github repo, to the folder where the code was committed
 cd <reporoot>/<applicationName>
 2.  run
+chmod +x ./trigger-analysis.sh
 ./trigger-analysis.sh <applicationName>
 
 

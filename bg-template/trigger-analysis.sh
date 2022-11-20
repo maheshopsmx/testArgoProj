@@ -40,3 +40,5 @@ rm -rf images.txt
 git add rollout.yaml
 git commit -m " new image added to rollout $newimage"
 git push
+echo
+echo success: login to argocd ui synch the application and check if analysis is triggered
