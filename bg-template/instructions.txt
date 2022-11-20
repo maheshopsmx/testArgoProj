@@ -7,7 +7,7 @@ Pre-requisites:
 curl - check using curl --help
 kubectl - check using kubectl --help
 connection via kubeconfig to the cluster on which both stable and preview namespaces exist - check using kubectl get ns
-deployments in both stable and preview namespaces with the full deployment of the application - check using kubectl -n <stablens> get deploy
+deployments in both stable and preview namespaces with the full deployment of the application - check using kubectl -n <stablens> get deploy and kubectl -n <previewns> get deploy
 a working iSD+argo installation in the same cluster, with prometheus, elasticsearch, kibana with ingress for isdui and isd argocd - check using kubectl -n <isdns> get po
 a github repo, create a new repo in github 
 access to argocd ui, check - kubectl -n <isdns> get ing argocd-ingress -o jsonpath='{.spec.rules[0].host}' , use a browser to login to the ui
