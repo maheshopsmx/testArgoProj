@@ -31,9 +31,9 @@ spec:
           - >-
              git config --global user.name "$GITUSERNAME";
              git config --global user.password "$GITPASSWORD";
-             git config --global user.email "something@company.io"
+             git config --global user.email "something@company.io";
              git config --global credential.helper store;
-             NEWGIT=$(echo $GITREPO | sed "s#https://#https://$GITUSERNAME:$GITPASSWORD@#")
+             NEWGIT=$(echo $GITREPO | sed "s#https://#https://$GITUSERNAME:$GITPASSWORD@#");
              git clone $NEWGIT /tmp/myrepo;
              cd /tmp/myrepo/APP-NAME;
              git checkout GIT-BRANCH;
