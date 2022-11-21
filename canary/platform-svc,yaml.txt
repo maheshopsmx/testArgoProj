@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: canary
+    meta.helm.sh/release-namespace: canary
+  labels:
+    app: oes
+    app.kubernetes.io/managed-by: Helm
+    chart: oes-3.12.2
+    component: platform
+    heritage: Helm
+    release: canary
+  name: oes-platform
+  namespace: canary
+spec:
+  ports:
+  - name: oes-platform
+    port: 8095
+    protocol: TCP
+    targetPort: 8095
+  selector:
+    app: oes
+    component: platform
+  sessionAffinity: None
+  type: ClusterIP
