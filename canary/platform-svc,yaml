@@ -12,7 +12,6 @@ metadata:
     heritage: Helm
     release: canary
   name: oes-platform
-  namespace: canary
 spec:
   ports:
   - name: oes-platform
