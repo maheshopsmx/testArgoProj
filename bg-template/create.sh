@@ -95,6 +95,8 @@ rm -rf application.yaml
 
 
 
-echo login to argocd host $argocdhost and look for application $mydir and sunc it
+echo login to argocd host $argocdhost and look for application $mydir and sync it
 
 echo 'to trigger analysis run go to the folder $mydir in your local github repo and run ./trigger-analysis.sh <namespace where this rollout was deployed> '
+
+echo please review template.yaml in $mydirand remove any unneeded services from the services section then add/commit/push to github
