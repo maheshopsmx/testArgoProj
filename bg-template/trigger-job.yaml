@@ -11,27 +11,33 @@ spec:
       containers:
       - name: trigger
         env:
-          - name: GIT-USERNAME
+          - name: GITUSERNAME
             valueFrom:
               secretKeyRef:
                 name: github-secret
                 key: username
                 optional: false 
-          - name: GIT-PASSWORD
+          - name: GITPASSWORD
             valueFrom:
               secretKeyRef:
                 name: github-secret
                 key: password
                 optional: false 
-        image:  'maven:3-openjdk-11'
+          - name: GITREPO
+            value: GIT-REPO
+        image:  'quay.io/opsmxpublic/kubegit:v2'
         command: ["bash",  "-c"]
         args:
           - >-
-             git config --global user.name "$GIT-USERNAME"
-             git config --global user.password "$GIT-PASSWORD"
-             git clone GIT-REPO /tmp/myrepo;
-             git checkout GIT-BRANCH;
+             git config --global user.name "$GITUSERNAME";
+             git config --global user.password "$GITPASSWORD";
+             git config --global user.email "something@company.io"
+             git config --global credential.helper store;
+             NEWGIT=$(echo $GITREPO | sed "s#https://#https://$GITUSERNAME:$GITPASSWORD@#")
+             git clone $NEWGIT /tmp/myrepo;
              cd /tmp/myrepo/APP-NAME;
+             git checkout GIT-BRANCH;
+             chmod +x trigger-analysis.sh;
              ./trigger-analysis.sh APP-NAME;
       restartPolicy: Never
       serviceAccount: trigger
@@ -48,7 +54,6 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  annotations:
   name: APP-NAME-trigger
   annotations:
     argocd.argoproj.io/hook: PostSync
@@ -65,7 +70,6 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  annotations:
   name: APP-NAME-trigger
   annotations:
     argocd.argoproj.io/hook: PostSync

@@ -21,7 +21,7 @@ echo image in github is $ingithubimage
 
 inpodimage=$( kubectl -n $rons get po | grep Running | awk '{print $1}' | xargs kubectl -n $rons get po -o jsonpath='{.spec.containers[0].image}')
 
-if [ -z $inpodimage ]; then echo 'error: could find rollout multins-bg, are you sure you are using the right namespace'  ; exit 1; fi
+if [ -z $inpodimage ]; then echo 'error: could find get po image, either an analysis is already running, or are you sure you are using the right namespace'  ; exit 1; fi
 
 echo $inpodimage in the pod
 

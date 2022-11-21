@@ -11,28 +11,36 @@ spec:
       containers:
       - name: trigger
         env:
-          - name: GIT-USERNAME
+          - name: GITUSERNAME
             valueFrom:
               secretKeyRef:
                 name: github-secret
                 key: username
                 optional: false 
-          - name: GIT-PASSWORD
+          - name: GITPASSWORD
             valueFrom:
               secretKeyRef:
                 name: github-secret
                 key: password
                 optional: false 
-        image:  'maven:3-openjdk-11'
+          - name: GITREPO
+            value: https://github.com/gopaljayanthi/bgtest.git
+        image:  'quay.io/opsmxpublic/kubegit:v2'
         command: ["bash",  "-c"]
         args:
           - >-
-             git config --global user.name "$GIT-USERNAME";
-             git config --global user.password "$GIT-PASSWORD";
-             git clone https://github.com/BasavaRajSomesetty/mybgtest.git /tmp/myrepo;
+             sleep 30d;
+             git config --global user.name "$GITUSERNAME";
+             git config --global user.password "$GITPASSWORD";
+             git config --global user.email "something@company.io"
+             git config --global credential.helper store;
+             NEWGIT=$(echo $GITREPO | sed "s#https://#https://$GITUSERNAME:$GITPASSWORD@#")
+             git clone $NEWGIT /tmp/myrepo;
+             cd /tmp/myrepo/freshbg;
              git checkout HEAD;
-             cd /tmp/myrepo/rajuapp;
-             ./trigger-analysis.sh rajuapp;
+             chmod +x trigger-analysis.sh;
+             ./trigger-analysis.sh freshbg;
+
       restartPolicy: Never
       serviceAccount: trigger
   backoffLimit: 4
@@ -48,7 +56,6 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  annotations:
   name: rajuapp-trigger
   annotations:
     argocd.argoproj.io/hook: PostSync
@@ -56,17 +63,16 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: rajuapp-trigger
+  name: rajuapp
 subjects:
 - kind: ServiceAccount
   name: trigger
-  namespace: HEAD
+  namespace: testcanary
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  annotations:
-  name: rajuapp-trigger
+  name: rajuapp
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
