@@ -29,7 +29,6 @@ spec:
         command: ["bash",  "-c"]
         args:
           - >-
-             sleep 30d;
              git config --global user.name "$GITUSERNAME";
              git config --global user.password "$GITPASSWORD";
              git config --global user.email "something@company.io"
