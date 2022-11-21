@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+  name: oes-platform
+spec:
+  ports:
+  - name: oes-platform
+    port: 8095
+    protocol: TCP
+    targetPort: 8095
+  selector:
+    app: oes
+    component: platform
+  sessionAffinity: None
+  type: ClusterIP
