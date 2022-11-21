@@ -63,6 +63,24 @@ chmod +x ./trigger-analysis.sh
 ./trigger-analysis.sh <applicationName>
 3. login to argocd url and look for application with name <applicationName> used in the previous command and sync the application
 
+===============================================================================================
+
+section D. to automate the triggering process, a kubernetes job is created in the preview namespace, so that anytime the preview namespace is synched the job is triggered.
+
+Pre-requisites:
+Section B is completed
+
+steps:
+1. get the template
+curl https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-template/trigger-job.yaml -o trigger-job.yaml
+2. get the script
+curl https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-template/automate-trigger.sh -o automate-trigger.sh
+chmod +x automate-trigger.sh
+./automate-trigger.sh <applicationName> <preview-ns> <isd-ns>
+3. commit the created file autotrigger.yaml into the github repo, in the same folder as where the preview application yamls are present
+4. go to argocd ui and sync the preview application.
+5. go to the argocd ui and sync the analysis application <applicationName> , check if an analysis is triggered
+
 
 
 
