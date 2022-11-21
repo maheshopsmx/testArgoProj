@@ -27,8 +27,8 @@ spec:
         command: ["bash",  "-c"]
         args:
           - >-
-             git config --global user.name "$GIT-USERNAME"
-             git config --global user.password "$GIT-PASSWORD"
+             git config --global user.name "$GIT-USERNAME";
+             git config --global user.password "$GIT-PASSWORD";
              git clone https://github.com/BasavaRajSomesetty/mybgtest.git /tmp/myrepo;
              git checkout HEAD;
              cd /tmp/myrepo/rajuapp;
