@@ -20,9 +20,9 @@ spec:
           - name: GIT-PASSWORD
             valueFrom:
               secretKeyRef:
-              name: github-secret
-              key: password
-              optional: false 
+                name: github-secret
+                key: password
+                optional: false 
         image:  'maven:3-openjdk-11'
         command: ["bash",  "-c"]
         args:
