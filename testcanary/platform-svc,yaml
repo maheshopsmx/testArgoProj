@@ -1,16 +1,41 @@
-apiVersion: v1
-kind: Service
+apiVersion: apps/v1
+
+kind: Deployment
+
 metadata:
+
+  name: nginx-deployment
+
   labels:
-  name: oes-platform
+
+    app: nginx
+
 spec:
-  ports:
-  - name: oes-platform
-    port: 8095
-    protocol: TCP
-    targetPort: 8095
+
+  replicas: 3
+
   selector:
-    app: oes
-    component: platform
-  sessionAffinity: None
-  type: ClusterIP
+
+    matchLabels:
+
+      app: nginx
+
+  template:
+
+    metadata:
+
+      labels:
+
+        app: nginx
+
+    spec:
+
+      containers:
+
+      - name: nginx
+
+        image: nginx:1.14.2
+
+        ports:
+
+        - containerPort: 80
