@@ -1,0 +1,93 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: rajuapp-trigger-analysis-
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: trigger
+        env:
+          - name: GIT-USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: github-secret
+                key: username
+                optional: false 
+          - name: GIT-PASSWORD
+            valueFrom:
+              secretKeyRef:
+              name: github-secret
+              key: password
+              optional: false 
+        image:  'maven:3-openjdk-11'
+        command: ["bash",  "-c"]
+        args:
+          - >-
+             git config --global user.name "$GIT-USERNAME"
+             git config --global user.password "$GIT-PASSWORD"
+             git clone https://github.com/BasavaRajSomesetty/mybgtest.git /tmp/myrepo;
+             git checkout HEAD;
+             cd /tmp/myrepo/rajuapp;
+             ./trigger-analysis.sh rajuapp;
+      restartPolicy: Never
+      serviceAccount: trigger
+  backoffLimit: 4
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: trigger
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  annotations:
+  name: rajuapp-trigger
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: rajuapp-trigger
+subjects:
+- kind: ServiceAccount
+  name: trigger
+  namespace: HEAD
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations:
+  name: rajuapp-trigger
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+rules:
+- apiGroups:
+  - argoproj.io
+  resources:
+  - rollouts
+  - rollouts/status
+  - rollouts/finalizers
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+  - patch
+- apiGroups:
+  - ''
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
