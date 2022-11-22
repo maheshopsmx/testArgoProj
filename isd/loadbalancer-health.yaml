@@ -24,4 +24,5 @@ spec:
                       echo hi $i iteration;
                       curl -i http:///platformservice/v1/applications/2 ;
                       sleep 1;
+                      curl -i http:///platformservice/v1/applications/2222222222 ;
                       done;
