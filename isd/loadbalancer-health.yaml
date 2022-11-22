@@ -13,7 +13,6 @@ spec:
               spec:
                 restartPolicy: Never
                 containers:
-                containers:
                 - name: curler
                   image: curlimages/curl
                   command: ["sh",  "-c"]
