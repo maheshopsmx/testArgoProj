@@ -18,8 +18,11 @@ spec:
                   image: curlimages/curl
                   command: ["sh",  "-c"]
                   args:
-                     - for iter in (1..20);
-                       do echo hi $iter iteration;
-                       curl -i http://oes-platform:8095/mgmt/health ;
-                       sleep 5s;
-                       done;
+                    - >-
+                      i=0;
+                      while [ $i -ne 200 ];
+                      do i=$(($i+1));
+                      echo hi $i iteration;
+                      curl -i http://oes-platform:8095/mgmt/health ;
+                      sleep 1;
+                      done;
