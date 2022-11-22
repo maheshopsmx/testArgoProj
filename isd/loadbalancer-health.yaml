@@ -22,7 +22,7 @@ spec:
                       while [ $i -ne 200 ];
                       do i=$(($i+1));
                       echo hi $i iteration;
-                      curl -i http:///platformservice/v1/applications/2 ;
+                      curl -i http://oes-platform:8095/platformservice/v1/applications/2 ;
                       sleep 1;
-                      curl -i http:///platformservice/v1/applications/2222222222 ;
+                      curl -i http://oes-platform:8095/platformservice/v1/applications/2222222222 ;
                       done;
