@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: loadbalancer-health
+spec:
+  metrics:
+    - name: test
+      initialDelay: 120s
+      provider:
+        job:
+          spec:
+            template:
+              spec:
+                restartPolicy: Never
+                containers:
+                containers:
+                - name: curler
+                  image: curlimages/curl
+                  command: ["sh",  "-c"]
+                  args:
+                     - for iter in (1..20);
+                       do echo hi $iter iteration;
+                       curl -i http://oes-platform:8095/mgmt/health ;
+                       sleep 5s;
+                       done;
