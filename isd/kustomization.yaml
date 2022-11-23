@@ -40,3 +40,4 @@ resources:
 - visibility-service-stable.yaml
 - load-executor-job.yaml
 - loadbalancer-health.yaml
+- load-executor-via-jmeter.yaml
