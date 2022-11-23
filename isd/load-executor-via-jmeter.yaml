@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
-  name: load-executor-job
+  name: load-executor-jmeter-job
 spec:
   metrics:
     - name: load-executor
