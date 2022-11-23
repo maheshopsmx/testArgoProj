@@ -69,6 +69,7 @@ section D. to automate the triggering process, a kubernetes job is created in th
 
 Pre-requisites:
 Section B is completed
+create a secret called github-secret in the preview namespace using kubectl -n <preview-ns> create secret generic github-secret --from-literal=username=<githubusername> --from-literal=password=<github-token>
 
 steps:
 1. get the template
