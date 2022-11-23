@@ -1,5 +1,5 @@
           - serviceName: SERVICENAME
-            metricTemplateName: for-apps-with-no-instrumentation
+            metricTemplateName: for-apps-noinstr
             metricTemplateVersion: "v1.0"
             metricScopeVariables: "${namespace_key},${container_key}"
             baselineMetricScope: "{{args.baseline-ns}},CONTAINERNAME"
