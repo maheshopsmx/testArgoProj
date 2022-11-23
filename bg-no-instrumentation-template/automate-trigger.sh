@@ -24,7 +24,7 @@ sed "s#APP-NAME#$app#g" trigger-job.yaml > autotrigger.yaml
 sed -i "s#GIT-REPO#$gitrepo#g" autotrigger.yaml
 sed -i "s#GIT-BRANCH#$gitrevision#g" autotrigger.yaml
 
-sed -i "s#PREVIEW-NS#$gitrevision#g" autotrigger.yaml
+sed -i "s#PREVIEW-NS#$pns#g" autotrigger.yaml
 
 echo 
 
