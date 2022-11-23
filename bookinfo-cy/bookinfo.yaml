@@ -22,7 +22,7 @@ metadata:
   name: productpage
   labels:
     app: productpage
-    version: v5
+    version: v6
 spec:
   replicas: 1
   selector:

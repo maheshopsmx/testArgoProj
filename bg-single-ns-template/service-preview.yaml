@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: SERVICE-NAME-preview
 spec:
-  ports:
-  - name: auditclient
-    port: 8098
-    protocol: TCP
-    targetPort: 8098
-  selector:
-    app: oes
-    component: auditclient
+#  ports:
+#  - name: auditclient
+#    port: 8098
+#    protocol: TCP
+#    targetPort: 8098
+#  selector:
+#    app: oes
+#    component: auditclient
   sessionAffinity: None
   type: ClusterIP
