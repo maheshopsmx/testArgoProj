@@ -17,8 +17,8 @@ spec:
                   image: docker.io/justb4/jmeter:latest
                   imagePullPolicy: Always
                   volumeMounts:
-                - name: jmx-script-volume
-                  mountPath: /etc/config/scripts
+                  - name: jmx-script-volume
+                    mountPath: /etc/config/scripts
                 restartPolicy: Never
                 volumes:
                 - name: jmx-script-volume
