@@ -73,9 +73,9 @@ create a secret called github-secret in the preview namespace using kubectl -n <
 
 steps:
 1. get the template
-curl https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-template/trigger-job.yaml -o trigger-job.yaml
+curl https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-no-instrumentation-template/trigger-job.yaml -o trigger-job.yaml
 2. get the script
-curl https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-template/automate-trigger.sh -o automate-trigger.sh
+curl https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-no-instrumentation-template/automate-trigger.sh -o automate-trigger.sh
 chmod +x automate-trigger.sh
 ./automate-trigger.sh <applicationName> <preview-ns> <isd-ns>
 3. commit the created file autotrigger.yaml into the github repo, in the same folder as where the preview application yamls are present

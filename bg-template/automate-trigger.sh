@@ -6,6 +6,7 @@ usage='error: Usage: ./automate-trigger.sh applicationname preview-namespace isd
 
 if [ -z $app ]; then echo $usage; exit 1; fi
 if [ -z $pns ]; then  echo $usage; exit 1; fi
+if [ -z $isdns ]; then  echo $usage; exit 1; fi
 
 kubectl -n $isdns get application $app
 
@@ -15,9 +16,9 @@ echo application $app not found, please give correct namespace of isd and correc
 exit 1
 fi
 
-path=$( kubectl -n $isdns get application rajuapp -o jsonpath='{.spec.source.path}')
-$gitrepo=$(  kubectl -n $isdns get application rajuapp -o jsonpath='{.spec.source.repoURL}')
-$gitrevision=$( kubectl -n $isdns get application rajuapp -o jsonpath='{.spec.source.targetRevision}')
+path=$( kubectl -n $isdns get application $app -o jsonpath='{.spec.source.path}')
+gitrepo=$(  kubectl -n $isdns get application $app -o jsonpath='{.spec.source.repoURL}')
+gitrevision=$( kubectl -n $isdns get application $app -o jsonpath='{.spec.source.targetRevision}')
 
 sed "s#APP-NAME#$app#g" trigger-job.yaml > autotrigger.yaml
 sed -i "s#GIT-REPO#$gitrepo#g" autotrigger.yaml

@@ -1,0 +1,97 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: bookinfoanal-trigger-analysis-
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: trigger
+        env:
+          - name: GITUSERNAME
+            valueFrom:
+              secretKeyRef:
+                name: github-secret
+                key: username
+                optional: false 
+          - name: GITPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: github-secret
+                key: password
+                optional: false 
+          - name: GITREPO
+            value: https://github.com/gopaljayanthi/bookinfo.git
+        image:  'quay.io/opsmxpublic/kubegit:v2'
+        command: ["bash",  "-c"]
+        args:
+          - >-
+             git config --global user.name "$GITUSERNAME";
+             git config --global user.password "$GITPASSWORD";
+             git config --global user.email "something@company.io";
+             git config --global credential.helper store;
+             NEWGIT=$(echo $GITREPO | sed "s#https://#https://$GITUSERNAME:$GITPASSWORD@#");
+             git clone $NEWGIT /tmp/myrepo;
+             cd /tmp/myrepo/bookinfoanal;
+             git checkout HEAD;
+             chmod +x trigger-analysis.sh;
+             ./trigger-analysis.sh bookinfoanal;
+      restartPolicy: Never
+      serviceAccount: trigger
+  backoffLimit: 4
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: trigger
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: bookinfoanal-trigger
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: bookinfoanal-trigger
+subjects:
+- kind: ServiceAccount
+  name: trigger
+  namespace: HEAD
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: bookinfoanal-trigger
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+rules:
+- apiGroups:
+  - argoproj.io
+  resources:
+  - rollouts
+  - rollouts/status
+  - rollouts/finalizers
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+  - patch
+- apiGroups:
+  - ''
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
