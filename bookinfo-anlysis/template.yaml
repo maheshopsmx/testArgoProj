@@ -1,0 +1,46 @@
+kind: AnalysisTemplate
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: isd
+spec:
+  args:
+        - name: baseline-ns
+        - name: preview-ns
+  metrics:
+    - name: isd
+      count: 1
+      initialDelay: 45s
+      provider:
+        opsmx:
+          application: bookinfo-bl
+          user: admin
+          lifetimeMinutes: 10
+          threshold:
+            pass: 80
+            marginal: 60
+          services:
+
+          - serviceName: details
+            metricTemplateName: for-apps-noinstr
+            metricTemplateVersion: "v1.0"
+            metricScopeVariables: "${namespace_key},${container_key}"
+            baselineMetricScope: "{{args.baseline-ns}},details"
+            canaryMetricScope: "{{args.preview-ns}},details"
+          - serviceName: productpage
+            metricTemplateName: for-apps-noinstr
+            metricTemplateVersion: "v1.0"
+            metricScopeVariables: "${namespace_key},${container_key}"
+            baselineMetricScope: "{{args.baseline-ns}},productpage"
+            canaryMetricScope: "{{args.preview-ns}},productpage"
+          - serviceName: ratings
+            metricTemplateName: for-apps-noinstr
+            metricTemplateVersion: "v1.0"
+            metricScopeVariables: "${namespace_key},${container_key}"
+            baselineMetricScope: "{{args.baseline-ns}},ratings"
+            canaryMetricScope: "{{args.preview-ns}},ratings"
+          - serviceName: reviews
+            metricTemplateName: for-apps-noinstr
+            metricTemplateVersion: "v1.0"
+            metricScopeVariables: "${namespace_key},${container_key}"
+            baselineMetricScope: "{{args.baseline-ns}},reviews"
+            canaryMetricScope: "{{args.preview-ns}},reviews"
