@@ -29,6 +29,7 @@ spec:
       prePromotionAnalysis:
         templates:
         - templateName: isd
+        - templateName: loadbalancer-health
         args:
         - name: baseline-ns
           value: bookinfo-bl

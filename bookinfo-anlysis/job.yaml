@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfoanal
+  name: loadbalancer-health
+spec:
+  metrics:
+    - initialDelay: 120s
+      name: test
+      provider:
+        job:
+          spec:
+            template:
+              spec:
+                containers:
+                  - args:
+                      - >-
+                        i=0; while [ $i -ne 200 ]; do i=$(($i+1)); echo hi $i
+                        iteration; curl -i
+                        https://bookinfobl.argo.ninja-test.opsmx.org/productpage?u=normal
+                        ; curl -i
+                        https://bookinfocy.argo.ninja-test.opsmx.org/productpage?u=normal
+                        ; sleep 1; done;
+                    command:
+                      - sh
+                      - '-c'
+                    image: curlimages/curl
+                    name: curler
+                restartPolicy: Never
