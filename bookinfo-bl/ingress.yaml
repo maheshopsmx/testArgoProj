@@ -2,12 +2,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-obs411-argocd
+    cert-manager.io/cluster-issuer: letsencrypt-maheshprom-argocd
     kubernetes.io/ingress.class: nginx
   name: bookinfo-bl
 spec:
   rules:
-  - host: bookinfo-bl.aoa.oes.opsmx.org
+  - host: bookinfobl.argo.ninja-test.opsmx.org
     http:
       paths:
       - backend:
@@ -19,5 +19,5 @@ spec:
         pathType: ImplementationSpecific
   tls:
   - hosts:
-    - bookinfo-bl.aoa.oes.opsmx.org
+    - bookinfobl.argo.ninja-test.opsmx.org
     secretName: bookinfo-bl-tls-certificate
