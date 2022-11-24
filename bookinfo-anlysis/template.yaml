@@ -22,25 +22,25 @@ spec:
 
           - serviceName: details
             metricTemplateName: opsmx-metrictemplate
-            metricTemplateVersion: "v1.0"
+            metricTemplateVersion: "v4.0"
             metricScopeVariables: "${namespace_key},${container_key}"
             baselineMetricScope: "{{args.baseline-ns}},details"
             canaryMetricScope: "{{args.preview-ns}},details"
           - serviceName: productpage
             metricTemplateName: opsmx-metrictemplate
-            metricTemplateVersion: "v1.0"
+            metricTemplateVersion: "v4.0"
             metricScopeVariables: "${namespace_key},${container_key}"
             baselineMetricScope: "{{args.baseline-ns}},productpage"
             canaryMetricScope: "{{args.preview-ns}},productpage"
           - serviceName: ratings
             metricTemplateName: opsmx-metrictemplate
-            metricTemplateVersion: "v1.0"
+            metricTemplateVersion: "v4.0"
             metricScopeVariables: "${namespace_key},${container_key}"
             baselineMetricScope: "{{args.baseline-ns}},ratings"
             canaryMetricScope: "{{args.preview-ns}},ratings"
           - serviceName: reviews
             metricTemplateName: opsmx-metrictemplate
-            metricTemplateVersion: "v1.0"
+            metricTemplateVersion: "v4.0"
             metricScopeVariables: "${namespace_key},${container_key}"
             baselineMetricScope: "{{args.baseline-ns}},reviews"
             canaryMetricScope: "{{args.preview-ns}},reviews"
