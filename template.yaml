@@ -12,7 +12,7 @@ spec:
       initialDelay: 45s
       provider:
         opsmx:
-          application: multins-bg
+          application: bookinfo-bl
           user: admin
           lifetimeMinutes: 10
           threshold:
