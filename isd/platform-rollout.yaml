@@ -24,7 +24,8 @@ spec:
       previewService: oes-platform-review
       prePromotionAnalysis:
         templates:
-        - templateName: isd-analysis-bg-v1
+        - templateName: load-executor-jmeter-job
+        #- templateName: isd-analysis-bg-v1
         #- templateName: loadbalancer-health
         #- templateName: load-executor-job
         args:
