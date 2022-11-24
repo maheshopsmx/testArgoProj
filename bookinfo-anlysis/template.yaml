@@ -21,25 +21,25 @@ spec:
           services:
 
           - serviceName: details
-            metricTemplateName: for-apps-noinstr
+            metricTemplateName: opsmx-metrictemplate
             metricTemplateVersion: "v1.0"
             metricScopeVariables: "${namespace_key},${container_key}"
             baselineMetricScope: "{{args.baseline-ns}},details"
             canaryMetricScope: "{{args.preview-ns}},details"
           - serviceName: productpage
-            metricTemplateName: for-apps-noinstr
+            metricTemplateName: opsmx-metrictemplate
             metricTemplateVersion: "v1.0"
             metricScopeVariables: "${namespace_key},${container_key}"
             baselineMetricScope: "{{args.baseline-ns}},productpage"
             canaryMetricScope: "{{args.preview-ns}},productpage"
           - serviceName: ratings
-            metricTemplateName: for-apps-noinstr
+            metricTemplateName: opsmx-metrictemplate
             metricTemplateVersion: "v1.0"
             metricScopeVariables: "${namespace_key},${container_key}"
             baselineMetricScope: "{{args.baseline-ns}},ratings"
             canaryMetricScope: "{{args.preview-ns}},ratings"
           - serviceName: reviews
-            metricTemplateName: for-apps-noinstr
+            metricTemplateName: opsmx-metrictemplate
             metricTemplateVersion: "v1.0"
             metricScopeVariables: "${namespace_key},${container_key}"
             baselineMetricScope: "{{args.baseline-ns}},reviews"
