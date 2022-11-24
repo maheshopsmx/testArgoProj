@@ -3,7 +3,7 @@ appns=$1
 
 echo creating yamls from templates
 
-while read line
+while read servicename
 do 
-echo $line
+echo $servicename
 done < $appns/deploys.txt
