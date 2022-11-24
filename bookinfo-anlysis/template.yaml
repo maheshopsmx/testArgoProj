@@ -14,7 +14,7 @@ spec:
         opsmx:
           application: bookinfo-bl
           user: admin
-          lifetimeMinutes: 10
+          lifetimeMinutes: 5
           threshold:
             pass: 80
             marginal: 60
