@@ -10,12 +10,12 @@ spec:
   metrics:
     - name: isd-analysis-bg-v1
       count: 1
-      initialDelay: 120s
+      initialDelay: 60s
       provider:
         opsmx:
           application: isd411
           user: admin
-          lifetimeMinutes: 3
+          lifetimeMinutes: 4
           threshold:
             pass: 80
             marginal: 60
