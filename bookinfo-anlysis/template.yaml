@@ -22,25 +22,25 @@ spec:
 
           - serviceName: details
             metricTemplateName: for-apps-noinstr
-            metricTemplateVersion: "v4.0"
-            metricScopeVariables: "${namespace_key},${container_key}"
-            baselineMetricScope: "{{args.baseline-ns}},details"
-            canaryMetricScope: "{{args.preview-ns}},details"
+            metricTemplateVersion: "v6.0"
+            metricScopeVariables: "${namespace_key},${container_key},${pod_key}"
+            baselineMetricScope: "{{args.baseline-ns}},details,details"
+            canaryMetricScope: "{{args.preview-ns}},details,details"
           - serviceName: productpage
             metricTemplateName: for-apps-noinstr
-            metricTemplateVersion: "v4.0"
-            metricScopeVariables: "${namespace_key},${container_key}"
-            baselineMetricScope: "{{args.baseline-ns}},productpage"
-            canaryMetricScope: "{{args.preview-ns}},productpage"
+            metricTemplateVersion: "v6.0"
+            metricScopeVariables: "${namespace_key},${container_key},${pod_key}"
+            baselineMetricScope: "{{args.baseline-ns}},productpage,productpage"
+            canaryMetricScope: "{{args.preview-ns}},productpage,productpage"
           - serviceName: ratings
             metricTemplateName: for-apps-noinstr
-            metricTemplateVersion: "v4.0"
-            metricScopeVariables: "${namespace_key},${container_key}"
-            baselineMetricScope: "{{args.baseline-ns}},ratings"
-            canaryMetricScope: "{{args.preview-ns}},ratings"
+            metricTemplateVersion: "v6.0"
+            metricScopeVariables: "${namespace_key},${container_key},${pod_key}"
+            baselineMetricScope: "{{args.baseline-ns}},ratings,ratings"
+            canaryMetricScope: "{{args.preview-ns}},ratings,ratings"
           - serviceName: reviews
             metricTemplateName: for-apps-noinstr
-            metricTemplateVersion: "v4.0"
-            metricScopeVariables: "${namespace_key},${container_key}"
-            baselineMetricScope: "{{args.baseline-ns}},reviews"
-            canaryMetricScope: "{{args.preview-ns}},reviews"
+            metricTemplateVersion: "v6.0"
+            metricScopeVariables: "${namespace_key},${container_key},${pod_key}"
+            baselineMetricScope: "{{args.baseline-ns}},reviews,reviews"
+            canaryMetricScope: "{{args.preview-ns}},reviews,reviews"
