@@ -25,7 +25,7 @@ spec:
       prePromotionAnalysis:
         templates:
         - templateName: load-executor-jmeter-job
-        #- templateName: isd-analysis-bg-v1
+        - templateName: isd-analysis-bg-v1
         #- templateName: loadbalancer-health
         #- templateName: load-executor-job
         args:
