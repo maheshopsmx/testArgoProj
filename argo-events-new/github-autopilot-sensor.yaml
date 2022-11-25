@@ -11,10 +11,6 @@ spec:
       eventName: analytics
       filters:
         data:
-          - path: "[body.commits.#.modified.#()#,body.commits.#.added.#()#,body.commits.#.removed.#()#]"
-            type: string
-            value:
-            - ".*canary-codebase.*"
           # Name of the event that triggered the delivery: [pull_request, push, yadayadayada]
           # https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads
           - path: body.X-GitHub-Event
@@ -71,6 +67,8 @@ spec:
                           echo $gitprnum is the gitprnum;  
                           gitdir=$(echo $repo | sed 's/.git$//' | sed 's/\// /g' | awk '{print $NF}');
                            echo $gitdir is gitrepo; 
+                          if  curl -u  ${gitcreds} -H "Accept: application/vnd.github+json" "https://api.github.com/repos/opsmx/analytics/pulls/${gitprnum}/files" | grep canary-codebase;
+                           then
                           curl -s -i -u $secret -X POST "https://jenkins.opsmx.net:8181/jenkins/job/Dev-autopilot-forargo/buildWithParameters?token=argocd-jenkins-token&BRANCHNAME=origin/$branch" -o /tmp/temp.out ; 
                           if [  $? -eq 0 ];
                            then echo build succeeded;
@@ -106,6 +104,9 @@ spec:
                           curl -s -u ${gitcreds} -X POST "https://api.github.com/repos/${gitowner}/${gitdir}/issues/${gitprnum}/comments" -H "Content-type: application/json" -d '{"body":"This PR successfully triggered this build '$buildurl'"}'; 
                            if [  $? -eq 0 ]; then
                           echo post succeeded; else echo post failed; fi;
+                          else
+                          echo no files changed in canary-codebase folder;
+                          fi                         
                       command:
                         - bash
                         - '-c'
