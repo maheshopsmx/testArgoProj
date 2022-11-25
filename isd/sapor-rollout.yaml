@@ -19,7 +19,7 @@ spec:
     name: oes-sapor
   strategy:
     blueGreen:
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
       activeService: oes-sapor-stable
       previewService: oes-sapor-preview
       prePromotionAnalysis:
