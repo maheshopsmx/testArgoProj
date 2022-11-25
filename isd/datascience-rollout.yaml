@@ -19,7 +19,7 @@ spec:
     name: oes-datascience
   strategy:
     blueGreen:
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
       activeService: oes-datascience-stable
       previewService: oes-datascience-preview
       prePromotionAnalysis:
