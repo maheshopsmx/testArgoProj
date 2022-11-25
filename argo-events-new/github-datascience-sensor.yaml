@@ -11,6 +11,10 @@ spec:
       eventName: analytics
       filters:
         data:
+          - path: "[body.commits.#.modified.#()#,body.commits.#.added.#()#,body.commits.#.removed.#()#]"
+            type: string
+            value:
+            - ".*datascience.*"
           # Name of the event that triggered the delivery: [pull_request, push, yadayadayada]
           # https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads
           - path: body.X-GitHub-Event
