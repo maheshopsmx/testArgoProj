@@ -1,0 +1,809 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: isd-minio
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: isd-minio
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: isd-openldap
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: isd-openldap
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: oes-audit-client
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: oes-audit-client
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: oes-audit-service
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: oes-audit-service
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: oes-autopilot
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: oes-autopilot
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: oes-dashboard
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: oes-dashboard
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: oes-datascience
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: oes-datascience
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: oes-gate
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: oes-gate
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: oes-platform
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: oes-platform
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: oes-sapor
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: oes-sapor
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: oes-ui
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: oes-ui
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: oes-visibility
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: oes-visibility
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: opa
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: opa
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: opsmx-controller-controller1
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: opsmx-controller-controller1
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: rabbitmq
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: rabbitmq
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: sapor-gate
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: sapor-gate
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: spin-clouddriver-caching
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: spin-clouddriver-caching
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: spin-clouddriver-ro
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: spin-clouddriver-ro
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: spin-clouddriver-ro-deck
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: spin-clouddriver-ro-deck
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: spin-clouddriver-rw
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: spin-clouddriver-rw
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: spin-deck
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: spin-deck
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: spin-echo-scheduler
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: spin-echo-scheduler
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: spin-echo-worker
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: spin-echo-worker
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: spin-front50
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: spin-front50
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: spin-gate
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: spin-gate
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: spin-igor
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: spin-igor
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: spin-orca
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: spin-orca
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: spin-rosco
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    name: spin-rosco
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: isd-redis-master
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    kind: StatefulSet       
+    name: isd-redis-master
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: isd-spinnaker-halyard
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    kind: StatefulSet       
+    name: isd-spinnaker-halyard
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: oes-db
+  namespace: isd312demo
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    kind: StatefulSet       
+    name: oes-db
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="isd312demo"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
+---
