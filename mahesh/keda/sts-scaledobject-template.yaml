@@ -1,0 +1,26 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  labels:
+    argocd.argoproj.io/instance: bookinfo-bl
+  name: STS-NAME
+  namespace: NAMESPACE
+spec:
+  cooldownPeriod: 300
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 120
+  scaleTargetRef:
+    kind: StatefulSet       
+    name: STS-NAME
+  triggers:
+    - metadata:
+        activationThreshold: '1.0'
+        ignoreNullValues: 'true'
+        metricName: nginx_ingress_controller_requests
+        query: >-
+          sum by (namespace) (rate(nginx_ingress_controller_requests{namespace="NAMESPACE"}[30m]))*1800
+        serverAddress: 'http://prom-prometheus-server.maheshprom:80'
+        threshold: '100.50'
+      type: prometheus
