@@ -19,7 +19,7 @@ spec:
     name: oes-platform
   strategy:
     blueGreen:
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
       activeService: oes-platform-stable
       previewService: oes-platform-review
       prePromotionAnalysis:
