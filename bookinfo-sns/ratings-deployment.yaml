@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: ratings
-          image: docker.io/maistra/examples-bookinfo-ratings-v1:0.12.0
+          image: quay.io/opsmxpublic/ratings:v1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9080
