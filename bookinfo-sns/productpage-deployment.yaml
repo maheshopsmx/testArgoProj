@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: productpage
-          image: quay.io/opsmxpublic/productpage:v1
+          image: quay.io/opsmxpublic/productpage:v2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9080
