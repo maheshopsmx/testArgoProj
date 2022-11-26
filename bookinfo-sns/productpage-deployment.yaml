@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: productpage
-          image: docker.io/maistra/examples-bookinfo-productpage-v1:0.12.0
+          image: quay.io/opsmxpublic/productpage:v1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9080
