@@ -24,5 +24,5 @@ spec:
             metricTemplateName: prometheus-health-validator
             metricTemplateVersion: "v5.0"
             metricScopeVariables: "${namespace_key},${pod_key},${app_name}"
-            baselineMetricScope: "bookinfo-sns,.*{{args.baseline-hash}}.*,null" 
-            canaryMetricScope: "bookinfo-sns,.*{{args.preview-hash}}.*,null"
+            baselineMetricScope: "bookinfo-sns,.*{{args.baseline-hash}}.*,productpage" 
+            canaryMetricScope: "bookinfo-sns,.*{{args.preview-hash}}.*,productpage"

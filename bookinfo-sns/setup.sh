@@ -18,7 +18,7 @@ sed -i "s/DEPLOY-NAME/$deployname/g" "$deployname"-rollout.yaml
 echo $yamlfile >>deploys.txt
 echo creating analysis template for this deployment $deployname
 cp analysis.tmpl "$deployname"-at.yaml
-labelappname=$(yq -r '.metadata.selector.matchLabels.app' $yamlfile)
+labelappname=$(yq -r '.spec.selector.matchLabels.app' $yamlfile)
 sed -i "s/DEPLOY-NAME/$deployname/g" "$deployname"-at.yaml
 sed -i "s/APP-LABEL/$labelappname/g" "$deployname"-at.yaml
 fi
