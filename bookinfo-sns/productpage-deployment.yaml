@@ -10,7 +10,6 @@ spec:
   selector:
     matchLabels:
       app: productpage
-      service: productpage
   template:
     metadata:
       labels:
