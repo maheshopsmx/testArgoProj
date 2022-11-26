@@ -13,7 +13,7 @@ spec:
       initialDelay: 120s
       provider:
         opsmx:
-          application: bookinfo
+          application: bookinfo-sns
           user: admin
           lifetimeMinutes: 3
           threshold:
