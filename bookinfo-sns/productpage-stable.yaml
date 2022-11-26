@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: productpage-stable
+  labels:
+    app: productpage
+    service: productpage
+spec:
+  ports:
+    - port: 9080
+      name: http
+  selector:
+    app: productpage
+    service: productpage
+  type: ClusterIP

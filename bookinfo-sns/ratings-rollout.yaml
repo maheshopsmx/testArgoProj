@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1 # Create a rollout resource
+kind: Rollout
+metadata:
+  name: ratings
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ratings
+    #put values here
+  workloadRef: # Reference an existing Deployment using workloadRef field
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ratings
+  strategy:
+    blueGreen:
+      autoPromotionEnabled: false
+      activeService: ratings-stable
+      previewService: ratings-preview
+      prePromotionAnalysis:
+        templates:
+          - templateName: ratings
+        args:
+          - name: baseline-hash
+            valueFrom:
+              podTemplateHashValue: Stable
+          - name: preview-hash
+            valueFrom:
+              podTemplateHashValue: Latest
+          - name: servicename
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name

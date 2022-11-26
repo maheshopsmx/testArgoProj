@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productpage
+  labels:
+    app: productpage
+    version: v5
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: productpage
+      service: productpage
+  template:
+    metadata:
+      labels:
+        app: productpage
+        version: v1
+    spec:
+      containers:
+        - name: productpage
+          image: docker.io/maistra/examples-bookinfo-productpage-v1:0.12.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9080
