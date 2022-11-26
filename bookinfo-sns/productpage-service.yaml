@@ -11,5 +11,4 @@ spec:
     name: http
   selector:
     app: productpage
-    service: productpage
   type: ClusterIP
