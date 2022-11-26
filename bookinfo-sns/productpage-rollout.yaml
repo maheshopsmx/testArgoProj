@@ -7,9 +7,7 @@ spec:
   selector:
     matchLabels:
       app: productpage
-      #put values here
-
-      service: productpage
+    #put values here
   workloadRef: # Reference an existing Deployment using workloadRef field
     apiVersion: apps/v1
     kind: Deployment

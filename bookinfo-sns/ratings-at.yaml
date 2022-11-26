@@ -1,7 +1,7 @@
 kind: AnalysisTemplate
 apiVersion: argoproj.io/v1alpha1
 metadata:
-  name: bookinfo-sns
+  name: ratings
 spec:
   args:
     - name: preview-hash
@@ -13,7 +13,7 @@ spec:
       initialDelay: 120s
       provider:
         opsmx:
-          application: bookinfo-sns
+          application: bookinfo
           user: admin
           lifetimeMinutes: 3
           threshold:

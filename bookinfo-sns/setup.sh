@@ -19,6 +19,7 @@ echo $yamlfile >>deploys.txt
 echo creating analysis template for this deployment $deployname
 cp analysis.tmpl "$deployname"-at.yaml
 labelappname=$(yq -r '.metadata.selector.matchLabels.app' $yamlfile)
+sed -i "s/DEPLOY-NAME/$deployname/g" "$deployname"-at.yaml
 sed -i "s/APP-LABEL/$labelappname/g" "$deployname"-at.yaml
 fi
 if [ $(yq -r '.kind' $yamlfile )  == Service ]
