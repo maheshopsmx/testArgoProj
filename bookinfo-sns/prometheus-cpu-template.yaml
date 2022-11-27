@@ -19,5 +19,5 @@ spec:
       prometheus:
         address: http://prom-prometheus-server.prom:80
         query: |
-          avg(rate(container_cpu_usage_seconds_total{namespace="booinfo-sns", pod=~".*{{args.preview-hash}}.*"}[1m])) /
-          avg(rate(container_cpu_usage_seconds_total{namespace="booinfo-sns", pod=~".*{{args.baseline-hash}}.*"}[1m]))
+          avg(rate(container_cpu_usage_seconds_total{namespace="bookinfo-sns", pod=~".*{{args.preview-hash}}.*"}[1m])) /
+          avg(rate(container_cpu_usage_seconds_total{namespace="bookinfo-sns", pod=~".*{{args.baseline-hash}}.*"}[1m]))
