@@ -20,6 +20,7 @@ spec:
       prePromotionAnalysis:
         templates:
           - templateName: details
+          - templateName: prometheus-cpu-template
         args:
           - name: baseline-hash
             valueFrom:
