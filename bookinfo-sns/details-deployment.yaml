@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: details
-          image: quay.io/opsmxpublic/details:v2
+          image: quay.io/opsmxpublic/details:v3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9080
