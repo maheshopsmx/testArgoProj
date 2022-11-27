@@ -4,7 +4,6 @@ metadata:
   name: prometheus-cpu-template
 spec:
   args:
-  - name: service-name
   - name: preview-hash
   - name: baseline-hash
   metrics:
