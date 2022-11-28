@@ -63,6 +63,7 @@ spec:
                           export repo="{{workflow.parameters.repo}}" ; 
                           export branch="{{workflow.parameters.branch}}" ; 
                           export gitprnum="{{workflow.parameters.prnumber}}"; 
+                          export user="{{workflow.parameters.user}}";
                           echo $repo is the repo;
                           echo $branch is gitbranch; 
                           echo $gitprnum is the gitprnum;  
