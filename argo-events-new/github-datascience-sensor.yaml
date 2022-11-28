@@ -146,7 +146,7 @@ spec:
               dest: spec.arguments.parameters.2.value
             - src:
                 dependencyName: test-dep
-                dataKey: body.pull_request.user.login
+                dataKey: body.sender.login
               dest: spec.arguments.parameters.3.value
       retryStrategy:
         steps: 3
