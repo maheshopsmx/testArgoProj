@@ -119,6 +119,7 @@ done < deploys.txt
 
 cp metrixtemplate.tmpl metrixtemplate.yaml
 cp sa-role-rb.tmpl sayaml-role-rb.yaml
+cp opsmx-profile-secret.tmpl opsmx-profile-secret.yaml
 
 
 

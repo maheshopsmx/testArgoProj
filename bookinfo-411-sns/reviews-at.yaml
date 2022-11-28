@@ -20,7 +20,7 @@ spec:
                 - name: opsmx11-secret
                 containers:
                 - name: opsmx-analysis-container
-                  image: 'opsmx11/argo-isd-metric-provider-job:v2' 
+                  image: 'quay.io/opsmxpublic/argo-isd-metric-provider-job:v2' 
                   imagePullPolicy: Always
                   env:
                     - name: MY_POD_NAME
