@@ -16,6 +16,7 @@ sed -i "s/APP-NAME/$appname/g" configmap.tmpl
 sed -i "s/APP-NS/$appns/g" configmap.tmpl
 sed -i "s#ISD-URL#$isdurl#g" configmap.tmpl
 sed -i "s#ISD-URL#$isdurl#g" opsmx-profile-secret.tmpl
+sed -i "s/APP-NAME/$appname/g" sa-role-rb.tmpl
 
 
 find . -type f  -name "*ml"  > allyamls.txt
@@ -117,6 +118,8 @@ sed -i "s/DEPLOY-LABEL/$deploylabel/g" $deployname-configmap.yaml
 done < deploys.txt
 
 cp metrixtemplate.tmpl metrixtemplate.yaml
+cp sa-role-rb.tmpl sayaml-role-rb.
+
 
 
 rm -rf allyamls.txt deploys.txt services.txt temp-deploy.txt temp-service.txt
