@@ -19,7 +19,7 @@ data:
                 "accountName": "isd312-saas-prom",
                 "riskDirection": "Higher",
                 "customThresholdHigher": 70,
-                "name": "avg(rate(container_cpu_usage_seconds_total{namespace=\"${namespace_key}\", pod=~\".*${pod_key}.*\"}[1m]) * 100)",
+                "name": "avg(rate(container_cpu_usage_seconds_total{namespace=\"${namespace_key}\", pod=~\".*${pod_key}.*\"}[5m]) * 100)",
                 "criticality": "Normal",
                 "customThresholdLower": "10",
                 "watchlist": false
@@ -33,7 +33,7 @@ data:
                 "metricType": "ADVANCED",
                 "metricWeight": 10,
                 "accountName": "isd312-saas-prom",
-                "name": "avg(rate(container_memory_usage_bytes{namespace=\"${namespace_key}\", pod=~\".*${pod_key}.*\"}[1m]))",
+                "name": "avg(rate(container_memory_usage_bytes{namespace=\"${namespace_key}\", pod=~\".*${pod_key}.*\"}[5m]))",
                 "watchlist": true
               }
             ],
@@ -82,7 +82,7 @@ data:
                 "accountName": "isd312-saas-prom",
                 "riskDirection": "Higher",
                 "customThresholdHigher": 70,
-                "name": "sum(rate(http_server_requests_seconds_count{app=\"${app_name}\",kubernetes_pod_name=~\"${pod_key}\",status=~\"^[4-5].*\"}[1m])) or vector(0)",
+                "name": "sum(rate(http_server_requests_seconds_count{app=\"${app_name}\",kubernetes_pod_name=~\"${pod_key}\",status=~\"^[4-5].*\"}[5m])) or vector(0)",
                 "criticality": "Normal",
                 "customThresholdLower": "10",
                 "watchlist": false
