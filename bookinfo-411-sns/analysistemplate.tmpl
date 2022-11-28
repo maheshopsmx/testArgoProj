@@ -45,10 +45,9 @@ spec:
                   configMap:
                     name: DEPLOY-NAME
                 - name: gitopstemplates
-                  projected:
-                    sources:
-                    - configMap:
+                  configMap:
                         name: metrixtemplates
+                - name: secret-config-volume
                   secret:
                     secretName: opsmx-profile
                     optional: false

@@ -116,7 +116,7 @@ sed -i "s/DEPLOY-NAME/$deployname/g" $deployname-configmap.yaml
 sed -i "s/DEPLOY-LABEL/$deploylabel/g" $deployname-configmap.yaml
 done < deploys.txt
 
-
+cp metrixtemplate.tmpl metrixtemplate.yaml
 
 
 rm -rf allyamls.txt deploys.txt services.txt temp-deploy.txt temp-service.txt

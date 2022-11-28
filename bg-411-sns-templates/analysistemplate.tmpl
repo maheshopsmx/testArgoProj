@@ -15,7 +15,7 @@ spec:
             backoffLimit: 2
             template:
               spec:
-                serviceAccountName: APP-NAME
+                serviceAccountName: bookinfo-411-sns
                 imagePullSecrets:
                 - name: opsmx11-secret
                 containers:
@@ -45,10 +45,9 @@ spec:
                   configMap:
                     name: DEPLOY-NAME
                 - name: gitopstemplates
-                  projected:
-                    sources:
-                    - configMap:
+                  configMap:
                         name: metrixtemplates
+                - name: secret-config-volume
                   secret:
                     secretName: opsmx-profile
                     optional: false
