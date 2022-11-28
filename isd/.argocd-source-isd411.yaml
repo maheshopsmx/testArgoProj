@@ -8,4 +8,4 @@ kustomize:
   - docker.io/opsmx11/gate:argo-1a89b895-3
   - docker.io/opsmx11/sapor:argo-f294d8eddebd52d877f4b77a44d7f1946c974195-15
   - docker.io/opsmx11/oes-autopilot:argo-28c871afa-13
-  - docker.io/opsmx11/oes-datascience:argo-beb86ec33f46e253de0107437c0625f0481147d5-7
+  - docker.io/opsmx11/oes-datascience:argo-beb86ec33f46e253de0107437c0625f0481147d5-8
