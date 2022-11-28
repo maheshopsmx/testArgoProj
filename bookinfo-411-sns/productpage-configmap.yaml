@@ -7,7 +7,7 @@ data:
     application: bookinfo-411-sns
     user: admin
     gateUrl: 'https://helm411-isd.isd-dev.opsmx.net/'
-    lifetimeMinutes: 3
+    lifetimeMinutes: 12
     gitops: true
     passScore: 90
     serviceList: 
