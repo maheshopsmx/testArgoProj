@@ -118,7 +118,7 @@ sed -i "s/DEPLOY-LABEL/$deploylabel/g" $deployname-configmap.yaml
 done < deploys.txt
 
 cp metrixtemplate.tmpl metrixtemplate.yaml
-cp sa-role-rb.tmpl sayaml-role-rb.
+cp sa-role-rb.tmpl sayaml-role-rb.yaml
 
 
 
