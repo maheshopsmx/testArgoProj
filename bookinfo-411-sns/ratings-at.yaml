@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: ratings
+spec:
+  args:
+    - name: preview-hash
+    - name: baseline-hash
+  metrics:
+    - name: metric-analysis-411
+      initialDelay: 120s
+      provider:
+        job:
+          spec:
+            backoffLimit: 2
+            template:
+              spec:
+                serviceAccountName: bookinfo-411-sns
+                imagePullSecrets:
+                - name: opsmx11-secret
+                containers:
+                - name: opsmx-analysis-container
+                  image: 'opsmx11/argo-isd-metric-provider-job:v2' 
+                  imagePullPolicy: Always
+                  env:
+                    - name: MY_POD_NAME
+                      valueFrom:
+                        fieldRef:
+                          fieldPath: metadata.name
+                    - name: STABLE_POD_HASH
+                      value: "{{args.baseline-hash}}"
+                    - name: LATEST_POD_HASH
+                      value: "{{args.preview-hash}}"
+                  volumeMounts:
+                    - name: provider-config-volume
+                      mountPath: /etc/config/provider
+                    - name: gitopstemplates
+                      mountPath: /etc/config/templates
+                    - name: secret-config-volume
+                      mountPath: /etc/config/secrets
+                      readOnly: true
+                restartPolicy: Never
+                volumes:
+                - name: provider-config-volume
+                  configMap:
+                    name: ratings
+                - name: gitopstemplates
+                  projected:
+                    sources:
+                    - configMap:
+                        name: metrixtemplates
+                  secret:
+                    secretName: opsmx-profile
+                    optional: false
