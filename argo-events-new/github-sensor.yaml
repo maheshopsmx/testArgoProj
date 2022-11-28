@@ -49,6 +49,7 @@ spec:
                     - name: repo
                     - name: branch
                     - name: prnumber
+                    - name: user
                 entrypoint: git
                 templates:
                   - name: git
@@ -62,6 +63,7 @@ spec:
                           export repo="{{workflow.parameters.repo}}" ; 
                           export branch="{{workflow.parameters.branch}}" ; 
                           export gitprnum="{{workflow.parameters.prnumber}}"; 
+                          export user="{{workflow.parameters.user}}";
                           echo $repo is the repo;
                           echo $branch is gitbranch; 
                           echo $gitprnum is the gitprnum;  
@@ -98,7 +100,9 @@ spec:
                           done;
                           echo from jenkins $buildurl is buildurl;
                           echo build started;
-
+                          argocdurl='https://argocd411.aoa.oes.opsmx.org/applications/isd411?view=tree&resource=kind%3AAnalysisRun%2Chealth%3AProgressing';
+                          text="Message from argoevents: $user raised this PR  https://github.com/OpsMx/"$gitdir"/pull/"$gitprnum" on branch $branch which triggered this build $buildurl. An analysis will be triggered soon at $argocdurl";
+                          curl -X POST -H "Content-type: application/json" --data '{"text":"'"$text"'"}' "https://hooks.slack.com/services/$slacksecret";
                           curl -s -u ${gitcreds} -X POST "https://api.github.com/repos/${gitowner}/${gitdir}/issues/${gitprnum}/comments" -H "Content-type: application/json" -d '{"body":"This PR successfully triggered this build '$buildurl'"}'; 
                            if [  $? -eq 0 ]; then
                           echo post succeeded; else echo post failed; fi;
@@ -116,6 +120,11 @@ spec:
                             secretKeyRef:
                               key: creds
                               name: jenkins-secret
+                        - name: slacksecret
+                          valueFrom:
+                            secretKeyRef:
+                              key: slacksecret
+                              name: slacksecret
                       image: 'quay.io/opsmxpublic/maven-java-xmllint:v1'
                     name: curl
           parameters:
@@ -131,5 +140,9 @@ spec:
                 dependencyName: test-dep
                 dataKey: body.pull_request.number
               dest: spec.arguments.parameters.2.value
+            - src:
+                dependencyName: test-dep
+                dataKey: body.sender.login
+              dest: spec.arguments.parameters.3.value
       retryStrategy:
         steps: 3
