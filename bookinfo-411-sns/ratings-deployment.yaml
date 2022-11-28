@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ratings
+  labels:
+    app: ratings
+    version: v1
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: ratings
+  template:
+    metadata:
+      labels:
+        app: ratings
+        version: v1
+    spec:
+      containers:
+        - name: ratings
+          image: quay.io/opsmxpublic/ratings:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9080
