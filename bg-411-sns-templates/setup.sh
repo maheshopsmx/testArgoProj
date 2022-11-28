@@ -1,6 +1,21 @@
 #!/bin/bash
+appname=$1 # a folder an application and a namespace will be created using this
+appns=$2 # baseline namespace
+isdurl=$3 # preview namespace
+
+
+usage='error: Usage: ./setup.sh APP-NAME APP-NS ISD_URL'
+
+if [ -z $appname ]; then echo $usage; exit 1; fi
+if [ -z $appns ]; then  echo $usage; exit 1; fi
+if [ -z $isdurl ]; then  echo $usage; exit 1; fi
 
 #replace APP-NAME APP-NS ISD-URL
+sed -i "s/APP-NAME/$appname/g" analysistemplate.tmpl
+sed -i "s/APP-NAME/$appname/g" configmap.tmpl
+sed -i "s/APP-NS/$appns/g" configmap.tmpl
+sed -i "s/ISD-URL/$isdurl/g" configmap.tmpl
+sed -i "s/ISD-URL/$isdurl/g" opsmx-profile-secret.tmpl
 
 rm -rf allyamls.txt deploys.txt services.txt
 find . -type f  -name "*ml"  > allyamls.txt
@@ -8,15 +23,14 @@ find . -type f  -name "*ml"  > allyamls.txt
 while read yamlfile
 do
 echo checking file $yamlfile
- #yq -i -r '.spec.replicas = 0' $yamlfile
-
-
 if [ $(yq -r '.kind' $yamlfile )  == Deployment ]
 then
 echo $yamlfile is a deployment yaml
+echo
 echo changing replicas to zero in $yamlfile 
 yq -i -r '.spec.replicas = 0' $yamlfile
 echo number of replicas in $yamlfile $(yq -r '.spec.replicas' $yamlfile)
+echo
 deployname=$(yq -r '.metadata.name' $yamlfile)
 echo creating rollout for this deployment $deployname
 cp rollout.tmpl "$deployname"-rollout.yaml
