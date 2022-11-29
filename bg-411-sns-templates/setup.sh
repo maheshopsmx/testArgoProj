@@ -17,7 +17,7 @@ sed -i "s/APP-NS/$appns/g" configmap.tmpl
 sed -i "s#ISD-URL#$isdurl#g" configmap.tmpl
 sed -i "s#ISD-URL#$isdurl#g" opsmx-profile-secret.tmpl
 sed -i "s/APP-NAME/$appname/g" sa-role-rb.tmpl
-
+sed -i "s/APP-NS/$appns/g" sa-role-rb.tmpl
 
 find . -type f  -name "*ml"  > allyamls.txt
 
@@ -107,6 +107,14 @@ done < deploys.txt
     
     done < services.txt
 
+
+echo creating metric template , sa, role, rolebinding, secret
+cp metrixtemplate.tmpl metrixtemplate.yaml
+cp sa-role-rb.tmpl sayaml-role-rb.yaml
+cp opsmx-profile-secret.tmpl opsmx-profile-secret.yaml
+
+metrictemplatename=$(cat metrixtemplate.yaml | yq -r '.data' | head -n 1 | awk '{print $1}' | sed 's/://')
+
 echo creating configmaps
 while read deploy
 do
@@ -115,10 +123,8 @@ deployname=$(yq -r '.metadata.name' $deploy)
 cp configmap.tmpl $deployname-configmap.yaml
 sed -i "s/DEPLOY-NAME/$deployname/g" $deployname-configmap.yaml
 sed -i "s/DEPLOY-LABEL/$deploylabel/g" $deployname-configmap.yaml
+sed -i "s/metrixtemplates/$metrictemplatename/g" $deployname-configmap.yaml
 done < deploys.txt
-
-cp metrixtemplate.tmpl metrixtemplate.yaml
-cp sa-role-rb.tmpl sayaml-role-rb.yaml
 
 
 
