@@ -17,7 +17,7 @@ sed -i "s/APP-NS/$appns/g" configmap.tmpl
 sed -i "s#ISD-URL#$isdurl#g" configmap.tmpl
 sed -i "s#ISD-URL#$isdurl#g" opsmx-profile-secret.tmpl
 sed -i "s/APP-NAME/$appname/g" sa-role-rb.tmpl
-
+sed -i "s/APP-NS/$appns/g" sa-role-rb.tmpl
 
 find . -type f  -name "*ml"  > allyamls.txt
 
