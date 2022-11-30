@@ -17,7 +17,8 @@ spec:
           user: admin
           lifetimeMinutes: 4
           threshold:
-            pass: 90
+            pass: 80
+            marginal: 60
           services:
           - serviceName: "{{args.servicename}}"
             metricTemplateName: prometheus-health-validator
