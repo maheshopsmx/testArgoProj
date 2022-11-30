@@ -16,9 +16,7 @@ spec:
           application: isd411
           user: admin
           lifetimeMinutes: 4
-          threshold:
-            pass: 90
-            marginal: 90
+          passScore: 90
           services:
           - serviceName: "{{args.servicename}}"
             metricTemplateName: prometheus-health-validator
