@@ -18,7 +18,6 @@ spec:
           lifetimeMinutes: 4
           threshold:
             pass: 80
-            marginal: 60
           services:
           - serviceName: "{{args.servicename}}"
             metricTemplateName: prometheus-health-validator
