@@ -26,7 +26,7 @@ spec:
     metadata:
       annotations:
         checksum/secret: 7e8ee2d093a462cded7af32c220ffda7f526ed551de7f7acf4d31ad0da07df84
-        prometheus.io/scrape: "false"
+        prometheus.io/scrape: "true"
         prometheus_io_path: /mgmt/prometheus
         prometheus_io_port: "8084"
       creationTimestamp: null
