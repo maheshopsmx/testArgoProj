@@ -7,5 +7,5 @@ kustomize:
   - docker.io/opsmx11/oes-visibility:argo-42b5bae-7
   - docker.io/opsmx11/gate:argo-4b2e8daa-7
   - docker.io/opsmx11/sapor:argo-3369b376ef30180a45bcb2b6ad47777c10427b2c-29
-  - docker.io/opsmx11/oes-autopilot:argo-6dfd51f58-33
+  - docker.io/opsmx11/oes-autopilot:argo-6dfd51f58-34
   - docker.io/opsmx11/oes-datascience:argo-beb86ec33f46e253de0107437c0625f0481147d5-8
