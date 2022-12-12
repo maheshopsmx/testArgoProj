@@ -1,0 +1,66 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: argoevents-webhook
+spec:
+  template:
+    serviceAccountName: operate-workflow-sa
+  dependencies:
+    - name: test-dep
+      eventSourceName: webhook
+      eventName: example
+  triggers:
+    - template:
+        name: slack-workflow-trigger
+        k8s:
+          operation: create
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: slack-
+              spec:
+                serviceAccountName: operate-workflow-sa
+                entrypoint: slackevents
+                arguments:
+                  parameters:
+                  - name: message
+                    # the value will get overridden by event payload from test-dep
+                    value: hello world
+                templates:
+                - name: slackevents
+                  inputs:
+                    parameters:
+                    - name: message
+                  container:
+                    image: quay.io/opsmxpublic/awsgit:v3-js
+                    command: ["sh", "-c"]
+                    args:
+                      - >-
+                        string='{{inputs.parameters.message}}'; 
+                        ns=obs411;
+                        echo $string;
+                        app=$(echo $string | jq -r '.app');
+                        echo $app;
+                        repourl=$(kubectl -n $ns get app $app -o jsonpath='{.status.sync.comparedTo.source.repoURL}');
+                        rev=$(kubectl -n $ns get app $app -o jsonpath='{.status.sync.revision}');
+                        echo Repo URL is $repourl;
+                        echo Revision is $rev;
+                        owner=$(echo $repourl | sed 's#/# #g' | awk '{print $3}');
+                        repo=$(echo $repourl | sed 's#/# #g' | awk '{print $4}' | sed 's#.git##');
+                        echo Owner is $owner;
+                        echo Repo is $repo;
+                        image=$(curl -u $gitcreds -k -vvv -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files[0].patch' | grep '^+' | awk '{print $3}');
+                        echo $image;
+                    env:
+                      - name: gitcreds
+                        valueFrom:
+                          secretKeyRef:
+                            key: gitcreds
+                            name: gitcreds
+          parameters:
+            - src:
+                dependencyName: test-dep
+                dataKey: body
+              dest: spec.arguments.parameters.0.value
