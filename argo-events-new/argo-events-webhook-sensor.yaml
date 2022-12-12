@@ -53,12 +53,19 @@ spec:
                         echo Repo is $repo;
                         image=$(curl -u $gitcreds -k -vvv -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files[0].patch' | grep '^+' | awk '{print $3}');
                         echo $image;
+                        text="Message from argoevents: $image deployed to dev412";
+                        curl -X POST -H "Content-type: application/json" --data '{"text":"'"$text"'"}' "https://hooks.slack.com/services/$slacksecret";
                     env:
                       - name: gitcreds
                         valueFrom:
                           secretKeyRef:
                             key: gitcreds
                             name: gitcreds
+                      - name: slacksecret
+                        valueFrom:
+                          secretKeyRef:
+                            key: slacksecret
+                            name: interation-env-slack
           parameters:
             - src:
                 dependencyName: test-dep
