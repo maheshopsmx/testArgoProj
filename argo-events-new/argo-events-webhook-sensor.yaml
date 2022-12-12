@@ -54,7 +54,7 @@ spec:
                         image=$(curl -u $gitcreds -k -vvv -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files[0].patch' | grep '^+' | head -n 1 | awk '{print $3}');
                         echo $image;
                         text="Message from argoevents: $image deployed to dev412";
-                        echo $test;
+                        echo Tesxt is $text;
                         curl -X POST -H "Content-type: application/json" --data '{"text":"'"$text"'"}' "https://hooks.slack.com/services/$slacksecret";
                     env:
                       - name: gitcreds
