@@ -55,7 +55,7 @@ spec:
                           echo $user is the user;  
                           gitdir=$(echo $repo | sed 's/.git$//' | sed 's/\// /g' | awk '{print $NF}');
                            echo $gitdir is gitrepo; 
-                          curl -s -i -u $secret -X POST "https://jenkins.opsmx.net:8181/jenkins/job/Dev-$gitdir-forargo/buildWithParameters?token=argocd-jenkins-token&BRANCHNAME=origin/v4.1" -o /tmp/temp.out ; 
+                          curl -s -i -u $secret -X POST "https://jenkins.opsmx.net:8181/jenkins/job/Dev-$gitdir-forargo/buildWithParameters?token=argocd-jenkins-token&BRANCHNAME=origin/$branch&TAGPREFIX=$branch" -o /tmp/temp.out ; 
                           if [  $? -eq 0 ];
                            then echo build succeeded;
                            else echo build failed; exit 1;
