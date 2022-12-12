@@ -86,7 +86,7 @@ spec:
                           done;
                           echo from jenkins $buildurl is buildurl;
                           echo build started;
-                          argocdurl='https://argocd411.aoa.oes.opsmx.org/applications/isd411?view=tree&resource=kind%3AAnalysisRun%2Chealth%3AProgressing';
+                          argocdurl='https://argocd411.aoa.oes.opsmx.org/applications/dev412?view=tree&resource=kind%3AAnalysisRun%2Chealth%3AProgressing';
                           text="Message from argoevents: $user committed this to v4.1 which triggered this build $buildurl. An analysis will be triggered soon at $argocdurl";
                           curl -X POST -H "Content-type: application/json" --data '{"text":"'"$text"'"}' "https://hooks.slack.com/services/$slacksecret";
                           #curl -s -u ${gitcreds} -X POST "https://api.github.com/repos/${gitowner}/${gitdir}/issues/${gitprnum}/comments" -H "Content-type: application/json" -d '{"body":"This PR successfully triggered this build '$buildurl'"}'; 
