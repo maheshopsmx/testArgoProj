@@ -127,7 +127,6 @@ spec:
                         if [ -z "$prnumber" ];
                         then
                         echo "Fail to get prnumber";
-                        exit 1;
                         else
                         echo "Sucessfully got  the prnumber $prnumber";
                         fi;
