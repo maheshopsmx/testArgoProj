@@ -50,13 +50,7 @@ spec:
                         owner=opsmx;
                         repo=$(echo $string | jq -r '.repository.name');
                         echo Owner is $owner;
-                        if [ ! -z "$repo" ];
-                        then
-                        echo "Not able to fetch repo...";
-                        exit 1;
-                        else
                         echo Repo is $repo;
-                        fi;
                         if [ $(curl -u $gitcreds -k -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files' | grep integration-env | wc -l) -gt 0 ];
                         then
                         image=$(curl -u $gitcreds -k -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files[0].patch' | grep '^+' | head -n 1 | awk '{print $3}');
