@@ -39,7 +39,7 @@ spec:
                     args:
                       - >-
                         string='{{inputs.parameters.message}}'; 
-                        rev=$(echo $string | jq -r '.commit[0].id');
+                        rev=$(echo $string | jq -r '.commits[0].id');
                         echo revision is $rev;
                         owner=opsmx;
                         repo=$(echo $string | jq -r '.repository.name');
