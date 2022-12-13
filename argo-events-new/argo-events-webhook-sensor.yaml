@@ -53,9 +53,81 @@ spec:
                         echo Repo is $repo;
                         image=$(curl -u $gitcreds -k -vvv -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files[0].patch' | grep '^+' | head -n 1 | awk '{print $3}');
                         echo $image;
-                        text="Message from argoevents: $image deployed to dev412";
+                        if [ $(echo "$image" | grep docker | wc -l) -gt 0 ];
+                        then
+                        servicename=$(echo $image | sed 's#/# #g' | awk '{print $3}' | sed 's#:# #g' | awk '{print $1}');
+                        sourcerev=$(echo $image | sed 's#/# #g' | awk '{print $3}' | sed 's#:# #g' | awk '{print $2}' | sed 's#-# #g' | awk '{print $2}');
+                        jenkinsbuildid=$(echo $image | sed 's#/# #g' | awk '{print $3}' | sed 's#:# #g' | awk '{print $2}' | sed 's#-# #g' | awk '{print $3}');
+                        echo "Service Name is $servicename";
+                        echo "Source Revision is $sourcerev";
+                        echo "Jenkins Build ID is $jenkinsbuildid";
+                        if [ "$servicename" = "oes-audit-service" ];
+                        then
+                        reponame=audit-service;
+                        fi;
+                        if [ "$servicename" = "oes-audit-client" ];
+                        then
+                        reponame=audit-client-service;
+                        fi;
+                        if [ "$servicename" = "oes-dashboard" ];
+                        then
+                        reponame=dashboard-service;
+                        fi;
+                        if [ "$servicename" = "oes-platform" ];
+                        then
+                        reponame=platform-service;
+                        fi;
+                        if [ "$servicename" = "oes-visibility" ];
+                        then
+                        reponame=visibility-service;
+                        fi;
+                        if [ "$servicename" = "gate" ];
+                        then
+                        reponame=gate;
+                        fi;
+                        if [ "$servicename" = "sapor" ];
+                        then
+                        reponame=oes-api;
+                        fi;
+                        if [ "$servicename" = "autopilot" ];
+                        then
+                        reponame=Analytics;
+                        fi;
+                        if [ "$servicename"  = "oes-datascience" ];
+                        then
+                        reponame=Analytics;
+                        fi;
+                        echo "Repo name is $reponame";
+                        author=$(curl -s -u $gitsecret -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.author.name');
+                        if [ $? -eq 0 ];
+                        then
+                        echo "Sucessfully got author name $author";
+                        else
+                        echo "Fail to get author name";
+                        exit 1;
+                        fi;
+                        message=$(curl -s -u $gitsecret -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.message');
+                        if [ $? -eq 0 ];
+                        then
+                        echo "Sucessfully get the message $message";
+                        else
+                        echo "Fail to get message";
+                        exit 1;
+                        fi;
+                        prnumber=$(curl -s -u $gitsecret -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.message' | grep '(#' | sed 's/(#//' | awk '{print $NF}' | sed 's/)//');
+                        if [ $? -eq 0 ];
+                        then
+                        echo "Sucessfully got  the prnumber $prnumber";
+                        else
+                        echo "Fail to get prnumber";
+                        exit 1;
+                        fi;
+                        text="Message from argoevents: $image deployed to integrationenv. $author commited $sourcerev to $reponame with PR number $prnumber and message $message";
                         echo Tesxt is $text;
                         curl -X POST -H "Content-type: application/json" --data '{"text":"'"$text"'"}' "https://hooks.slack.com/services/$slacksecret";
+                        else
+                        echo "No image change detected...";
+                        fi;
                     env:
                       - name: gitcreds
                         valueFrom:
