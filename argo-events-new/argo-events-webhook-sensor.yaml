@@ -39,16 +39,10 @@ spec:
                     args:
                       - >-
                         string='{{inputs.parameters.message}}'; 
-                        ns=obs411;
-                        echo $string;
-                        app=$(echo $string | jq -r '.app');
-                        echo $app;
-                        repourl=$(kubectl -n $ns get app $app -o jsonpath='{.status.sync.comparedTo.source.repoURL}');
-                        rev=$(kubectl -n $ns get app $app -o jsonpath='{.status.sync.revision}');
-                        echo Repo URL is $repourl;
-                        echo Revision is $rev;
-                        owner=$(echo $repourl | sed 's#/# #g' | awk '{print $3}');
-                        repo=$(echo $repourl | sed 's#/# #g' | awk '{print $4}' | sed 's#.git##');
+                        rev=$(echo $string | jq -r '.commit[0].id');
+                        echo revision is $rev;
+                        owner=opsmx;
+                        repo=$(echo $string | jq -r '.repository.name');
                         echo Owner is $owner;
                         echo Repo is $repo;
                         if [ $(curl -u $gitcreds -k -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files' | grep integration-env | wc -l) -gt 0 ];
@@ -100,6 +94,7 @@ spec:
                         reponame=Analytics;
                         fi;
                         echo "Repo name is $reponame";
+                        buildurl="https://jenkins.opsmx.net:8181/jenkins/job/Dev-$reponame-forargo/$jenkinsbuildid/";
                         author=$(curl -s -u $gitsecret -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.author.name');
                         if [ $? -eq 0 ];
                         then
@@ -124,7 +119,7 @@ spec:
                         echo "Fail to get prnumber";
                         exit 1;
                         fi;
-                        text="Message from argoevents: $image deployed to integrationenv. $author commited $sourcerev to $reponame with PR number $prnumber and message $message";
+                        text="Message from argoevents: $image deployed to integrationenv. $author commited $sourcerev to $reponame with PR number $prnumber and message $message. buildurl is $buildurl";
                         echo Tesxt is $text;
                         curl -X POST -H "Content-type: application/json" --data '{"text":"'"$text"'"}' "https://hooks.slack.com/services/$slacksecret";
                         else
