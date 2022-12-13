@@ -40,13 +40,7 @@ spec:
                       - >-
                         string='{{inputs.parameters.message}}'; 
                         rev=$(echo $string | jq -r '.commits[0].id');
-                        if [ ! -z "$rev" ];
-                        then
-                        echo "Not able to fectch revision..."
-                        exit 1;
-                        else
                         echo revision is $rev;
-                        fi;
                         owner=opsmx;
                         repo=$(echo $string | jq -r '.repository.name');
                         echo Owner is $owner;
