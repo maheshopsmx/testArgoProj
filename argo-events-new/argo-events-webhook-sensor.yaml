@@ -95,7 +95,7 @@ spec:
                         fi;
                         echo "Repo name is $reponame";
                         buildurl="https://jenkins.opsmx.net:8181/jenkins/job/Dev-$reponame-forargo/$jenkinsbuildid/";
-                        author=$(curl -s -u $gitsecret -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.author.name');
+                        author=$(curl -s -u $gitcreds -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.author.name');
                         if [ $? -eq 0 ];
                         then
                         echo "Sucessfully got author name $author";
@@ -103,7 +103,7 @@ spec:
                         echo "Fail to get author name";
                         exit 1;
                         fi;
-                        message=$(curl -s -u $gitsecret -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.message');
+                        message=$(curl -s -u $gitcreds -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.message');
                         if [ $? -eq 0 ];
                         then
                         echo "Sucessfully get the message $message";
@@ -111,7 +111,7 @@ spec:
                         echo "Fail to get message";
                         exit 1;
                         fi;
-                        prnumber=$(curl -s -u $gitsecret -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.message' | grep '(#' | sed 's/(#//' | awk '{print $NF}' | sed 's/)//');
+                        prnumber=$(curl -s -u $gitcreds -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.message' | grep '(#' | sed 's/(#//' | awk '{print $NF}' | sed 's/)//');
                         if [ $? -eq 0 ];
                         then
                         echo "Sucessfully got  the prnumber $prnumber";
