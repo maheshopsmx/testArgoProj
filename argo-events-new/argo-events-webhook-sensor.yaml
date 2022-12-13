@@ -51,7 +51,9 @@ spec:
                         repo=$(echo $repourl | sed 's#/# #g' | awk '{print $4}' | sed 's#.git##');
                         echo Owner is $owner;
                         echo Repo is $repo;
-                        image=$(curl -u $gitcreds -k -vvv -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files[0].patch' | grep '^+' | head -n 1 | awk '{print $3}');
+                        if [ $(curl -u $gitcreds -k -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files | grep integration-env | wc -l') -gt 0 ];
+                        then
+                        image=$(curl -u $gitcreds -k -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files[0].patch' | grep '^+' | head -n 1 | awk '{print $3}');
                         echo $image;
                         if [ $(echo "$image" | grep docker | wc -l) -gt 0 ];
                         then
@@ -127,6 +129,9 @@ spec:
                         curl -X POST -H "Content-type: application/json" --data '{"text":"'"$text"'"}' "https://hooks.slack.com/services/$slacksecret";
                         else
                         echo "No image change detected...";
+                        fi;
+                        else
+                        echo "No changes in integration environment";
                         fi;
                     env:
                       - name: gitcreds
