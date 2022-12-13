@@ -40,11 +40,23 @@ spec:
                       - >-
                         string='{{inputs.parameters.message}}'; 
                         rev=$(echo $string | jq -r '.commits[0].id');
+                        if [ -z "$rev" ];
+                        then
+                        echo "Not able to fectch revision..."
+                        exit 1;
+                        else
                         echo revision is $rev;
+                        fi;
                         owner=opsmx;
-                        repo=$(echo $string | jq -r '.repository.name');
                         echo Owner is $owner;
+                        repo=$(echo $string | jq -r '.repository.name');
+                        if [ -z "$repo" ];
+                        then
+                        echo "Not able to fetch repo...";
+                        exit 1;
+                        else
                         echo Repo is $repo;
+                        fi;
                         if [ $(curl -u $gitcreds -k -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files' | grep integration-env | wc -l) -gt 0 ];
                         then
                         image=$(curl -u $gitcreds -k -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files[0].patch' | grep '^+' | head -n 1 | awk '{print $3}');
@@ -96,28 +108,28 @@ spec:
                         echo "Repo name is $reponame";
                         buildurl="https://jenkins.opsmx.net:8181/jenkins/job/Dev-$reponame-forargo/$jenkinsbuildid/";
                         author=$(curl -s -u $gitcreds -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.author.name');
-                        if [ ! -z "$author" ];
+                        if [ -z "$author" ];
                         then
-                        echo "Sucessfully got author name $author";
-                        else
                         echo "Fail to get author name";
                         exit 1;
+                        else
+                        echo "Sucessfully got author name $author";
                         fi;
                         message=$(curl -s -u $gitcreds -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.message');
-                        if [ ! -z "$message" ];
+                        if [ -z "$message" ];
                         then
-                        echo "Sucessfully get the message $message";
-                        else
                         echo "Fail to get message";
                         exit 1;
+                        else
+                        echo "Sucessfully get the message $message";
                         fi;
                         prnumber=$(curl -s -u $gitcreds -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.message' | grep '(#' | sed 's/(#//' | awk '{print $NF}' | sed 's/)//');
-                        if [ ! -z "$prnumber" ];
+                        if [ -z "$prnumber" ];
                         then
-                        echo "Sucessfully got  the prnumber $prnumber";
-                        else
                         echo "Fail to get prnumber";
                         exit 1;
+                        else
+                        echo "Sucessfully got  the prnumber $prnumber";
                         fi;
                         text="Message from argoevents: $image deployed to integrationenv. $author commited $sourcerev to $reponame with PR number $prnumber and message $message. buildurl is $buildurl";
                         echo Tesxt is $text;
