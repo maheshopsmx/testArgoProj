@@ -38,7 +38,6 @@ spec:
                     command: ["sh", "-c"]
                     args:
                       - >-
-                        set -x;
                         string='{{inputs.parameters.message}}'; 
                         rev=$(echo $string | jq -r '.commits[0].id');
                         if [ -z "$rev" ];
@@ -132,7 +131,7 @@ spec:
                         echo "Sucessfully got  the prnumber $prnumber";
                         prmessage="with PR number https://github.com/OpsMx/$reponame/pull/$prnumber";
                         fi;
-                        text="Message from argoevents: $image deployed to integrationenv. $author commited https://github.com/OpsMx/$reponame/commit/$sourcerev to $reponame with PR number with PR number https://github.com/OpsMx/$reponame/pull/$prnumber and message $message. buildurl is $buildurl";
+                        text="Message from argoevents:\n $image deployed to integrationenv.\n $author commited https://github.com/OpsMx/$reponame/commit/$sourcerev to $reponame $prmessage and message $message.\n buildurl is $buildurl";
                         echo Tesxt is $text;	
                         curl -X POST -H "Content-type: application/json" --data '{"text":"'"$text"'"}' "https://hooks.slack.com/services/$slacksecret";
                         else
