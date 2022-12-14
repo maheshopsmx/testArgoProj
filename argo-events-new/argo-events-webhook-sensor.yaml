@@ -105,6 +105,10 @@ spec:
                         then
                         reponame=Analytics;
                         fi;
+                        if [ "$servicename"  = "oes-ui" ];
+                        then
+                        reponame=oes-ui;
+                        fi;
                         echo "Repo name is $reponame";
                         buildurl="https://jenkins.opsmx.net:8181/jenkins/job/Dev-$reponame-forargo/$jenkinsbuildid/";
                         author=$(curl -s -u $gitcreds -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.author.name');
