@@ -38,6 +38,7 @@ spec:
                     command: ["sh", "-c"]
                     args:
                       - >-
+                        set -x;
                         string='{{inputs.parameters.message}}'; 
                         rev=$(echo $string | jq -r '.commits[0].id');
                         if [ -z "$rev" ];
