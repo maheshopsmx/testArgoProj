@@ -129,8 +129,9 @@ spec:
                         echo "Fail to get prnumber";
                         else
                         echo "Sucessfully got  the prnumber $prnumber";
+                        prmessage="with PR number https://github.com/OpsMx/$reponame/pull/$prnumber"
                         fi;
-                        text="Message from argoevents: $image deployed to integrationenv. $author commited $sourcerev to $reponame with PR number $prnumber and message $message. buildurl is $buildurl";
+                        text="Message from argoevents: $image deployed to integrationenv. $author commited https://github.com/OpsMx/$reponame/commit/$sourcerev  to $reponame $prmessage and message $message. buildurl is $buildurl";
                         echo Tesxt is $text;
                         curl -X POST -H "Content-type: application/json" --data '{"text":"'"$text"'"}' "https://hooks.slack.com/services/$slacksecret";
                         else
