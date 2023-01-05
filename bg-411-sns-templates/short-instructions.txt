@@ -15,8 +15,8 @@ curl https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-411-sn
 chmod +x download.sh
 2.3 
 ./download.sh
-2.4
-check in iSD URL if there is a metric provide of Account type with Account name mentioned in metrixtemplate.tmpl https://<ISD-URL>/ui/setup/datasourcelist
+2.4 this download a number of template files 
+check in iSD URL if there is a metric provider of Account type with Account name mentioned in metrixtemplate.tmpl https://<ISD-URL>/ui/setup/datasourcelist
 
       "data": {
         "percent_diff_threshold": "hard",
