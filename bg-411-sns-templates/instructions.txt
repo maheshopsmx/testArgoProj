@@ -1,6 +1,7 @@
 to create yaml for rollouts and analysis templates for blue green strategy with pre-promotion analysis
 
 pre-requisites
+bash ( for windows machines use gitbash https://git-scm.com/downloads
 yq needs to be installed https://github.com/mikefarah/yq  ( check yq --version)
 github repo where the yaml  files for the application are present, deployment and correpsonding service.yamls
 isd+argocd+argorollouts+prometheus installed and setup
