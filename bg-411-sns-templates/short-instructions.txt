@@ -1,0 +1,39 @@
+to create yaml for rollouts and analysis templates for blue green strategy with pre-promotion analysis
+
+pre-requisites
+bash ( for windows machines use gitbash https://git-scm.com/downloads )
+yq needs to be installed https://github.com/mikefarah/yq  ( check yq --version)
+github repo where the yaml  files for the application are present, deployment and correpsonding service.yamls
+isd+argocd+argorollouts+prometheus installed and setup
+
+steps
+1. cd to github repo where the deployment and service yamls for the application are
+2. download templates and script
+2.1 
+curl https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-411-sns-templates/download.sh -o download.sh
+2.2 
+chmod +x download.sh
+2.3 
+./download.sh
+2.4
+check in iSD URL if there is a metric provide of Account type with Account name mentioned in metrixtemplate.tmpl https://<ISD-URL>/ui/setup/datasourcelist
+
+      "data": {
+        "percent_diff_threshold": "hard",
+        "isNormalize": false,
+        "groups": [
+          {
+            "metrics": [
+              {
+                "metricType": "ADVANCED",
+                "metricWeight": 1,
+                "nanStrategy": "ReplaceWithZero",
+                "accountName": "isd312-saas-prom", <====== accountNme 
+
+      "advancedProvider": "PROMETHEUS" <================ provider
+if the account name is different , please change in file metrictemplate.tmpl
+3. create yamls from templates
+3.1 ./setup.sh APP-NAME APP-NAMESPACE ISD-URL
+4. git add/commit/push the files to github repo and sync the repo from argocdurl
+5. change the image in one of the deployments add/commit/push the files to github repo and sync the repo from argocdurl
+6. go to argocd and doa sync and check whether an analysis is triggered.
