@@ -1,0 +1,162 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: argoevents-webhook
+spec:
+  template:
+    serviceAccountName: operate-workflow-sa
+  dependencies:
+    - name: test-dep
+      eventSourceName: webhook
+      eventName: example
+  triggers:
+    - template:
+        name: slack-workflow-trigger
+        k8s:
+          operation: create
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: slack-
+              spec:
+                serviceAccountName: operate-workflow-sa
+                entrypoint: slackevents
+                arguments:
+                  parameters:
+                  - name: message
+                    # the value will get overridden by event payload from test-dep
+                    value: hello world
+                templates:
+                - name: slackevents
+                  inputs:
+                    parameters:
+                    - name: message
+                  container:
+                    image: quay.io/opsmxpublic/awsgit:v3-js
+                    command: ["sh", "-c"]
+                    args:
+                      - >-
+                        string='{{inputs.parameters.message}}'; 
+                        rev=$(echo $string | jq -r '.commits[0].id');
+                        if [ -z "$rev" ] || [ "$rev" = null ];
+                        then
+                        echo "Not able to fectch revision...";
+                        exit 1;
+                        else
+                        echo revision is $rev;
+                        fi;
+                        owner=opsmx;
+                        echo Owner is $owner;
+                        repo=$(echo $string | jq -r '.repository.name');
+                        if [ -z "$repo" ] || [ "$repo" = null ];
+                        then
+                        echo "Not able to fetch repo...";
+                        exit 1;
+                        else
+                        echo Repo is $repo;
+                        fi;
+                        if [ $(curl -u $gitcreds -k -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files' | grep integration-env | wc -l) -gt 0 ];
+                        then
+                        image=$(curl -u $gitcreds -k -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$owner/$repo/commits/$rev" | jq -r '.files[0].patch' | grep '^+' | head -n 1 | awk '{print $3}');
+                        echo $image;
+                        if [ $(echo "$image" | grep docker | wc -l) -gt 0 ];
+                        then
+                        servicename=$(echo $image | sed 's#/# #g' | awk '{print $3}' | sed 's#:# #g' | awk '{print $1}');
+                        sourcerev=$(echo $image | sed 's#/# #g' | awk '{print $3}' | sed 's#:# #g' | awk '{print $2}' | sed 's#-# #g' | awk '{print $2}');
+                        jenkinsbuildid=$(echo $image | sed 's#/# #g' | awk '{print $3}' | sed 's#:# #g' | awk '{print $2}' | sed 's#-# #g' | awk '{print $3}');
+                        echo "Service Name is $servicename";
+                        echo "Source Revision is $sourcerev";
+                        echo "Jenkins Build ID is $jenkinsbuildid";
+                        if [ "$servicename" = "oes-audit-service" ];
+                        then
+                        reponame=audit-service;
+                        fi;
+                        if [ "$servicename" = "oes-audit-client" ];
+                        then
+                        reponame=audit-client-service;
+                        fi;
+                        if [ "$servicename" = "oes-dashboard" ];
+                        then
+                        reponame=dashboard-service;
+                        fi;
+                        if [ "$servicename" = "oes-platform" ];
+                        then
+                        reponame=platform-service;
+                        fi;
+                        if [ "$servicename" = "oes-visibility" ];
+                        then
+                        reponame=visibility-service;
+                        fi;
+                        if [ "$servicename" = "gate" ];
+                        then
+                        reponame=gate;
+                        fi;
+                        if [ "$servicename" = "sapor" ];
+                        then
+                        reponame=oes-api;
+                        fi;
+                        if [ "$servicename" = "autopilot" ];
+                        then
+                        reponame=Analytics;
+                        fi;
+                        if [ "$servicename"  = "oes-datascience" ];
+                        then
+                        reponame=Analytics;
+                        fi;
+                        if [ "$servicename"  = "oes-ui" ];
+                        then
+                        reponame=oes-ui;
+                        fi;
+                        echo "Repo name is $reponame";
+                        buildurl="https://jenkins.opsmx.net:8181/jenkins/job/Dev-$reponame-forargo/$jenkinsbuildid/";
+                        author=$(curl -s -u $gitcreds -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.author.name');
+                        if [ -z "$author" ] || [ "$author" = null ];
+                        then
+                        echo "Fail to get author name";
+                        exit 1;
+                        else
+                        echo "Sucessfully got author name $author";
+                        fi;
+                        message=$(curl -s -u $gitcreds -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.message');
+                        if [ -z "$message" ] || [ "$message" = null ];
+                        then
+                        echo "Fail to get message";
+                        exit 1;
+                        else
+                        echo "Sucessfully get the message $message";
+                        fi;
+                        prnumber=$(curl -s -u $gitcreds -H "Accept: application/vnd.github+json" https://api.github.com/repos/opsmx/$reponame/commits/$sourcerev | jq -r '.commit.message' | grep '(#' | sed 's/(#//' | awk '{print $NF}' | sed 's/)//');
+                        if [ -z "$prnumber" ];
+                        then
+                        echo "Fail to get prnumber";
+                        else
+                        echo "Sucessfully got  the prnumber $prnumber";
+                        prmessage="with PR number https://github.com/OpsMx/$reponame/pull/$prnumber";
+                        fi;
+                        text="Message from argoevents:\n $image deployed to integrationenv.\n $author commited https://github.com/OpsMx/$reponame/commit/$sourcerev to $reponame $prmessage and message $message.\n Buildurl is $buildurl";
+                        echo Tesxt is $text;	
+                        curl -X POST -H "Content-type: application/json" --data '{"text":"'"$text"'"}' "https://hooks.slack.com/services/$slacksecret";
+                        else
+                        echo "No image change detected...";
+                        fi;
+                        else
+                        echo "No changes in integration environment";
+                        fi;
+                    env:
+                      - name: gitcreds
+                        valueFrom:
+                          secretKeyRef:
+                            key: gitcreds
+                            name: gitcreds
+                      - name: slacksecret
+                        valueFrom:
+                          secretKeyRef:
+                            key: slacksecret
+                            name: interation-env-slack
+          parameters:
+            - src:
+                dependencyName: test-dep
+                dataKey: body
+              dest: spec.arguments.parameters.0.value

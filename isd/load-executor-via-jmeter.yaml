@@ -5,7 +5,7 @@ metadata:
 spec:
   metrics:
     - name: load-executor
-      initialDelay: 120s
+      initialDelay: 90s
       provider:
         job:
           spec:

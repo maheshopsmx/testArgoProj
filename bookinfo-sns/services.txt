@@ -1,0 +1,4 @@
+./details-service.yaml
+./productpage-service.yaml
+./ratings-service.yaml
+./reviews-service.yaml

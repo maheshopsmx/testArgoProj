@@ -19,11 +19,12 @@ spec:
     name: oes-platform
   strategy:
     blueGreen:
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
       activeService: oes-platform-stable
       previewService: oes-platform-review
       prePromotionAnalysis:
         templates:
+        - templateName: load-executor-jmeter-job
         - templateName: isd-analysis-bg-v1
         #- templateName: loadbalancer-health
         #- templateName: load-executor-job

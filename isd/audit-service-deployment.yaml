@@ -26,7 +26,7 @@ spec:
     metadata:
       annotations:
         configmap/checksum: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
-        prometheus.io/scrape: "false"
+        prometheus.io/scrape: "true"
         prometheus_io_path: /mgmt/prometheus
         prometheus_io_port: "8097"
       creationTimestamp: null

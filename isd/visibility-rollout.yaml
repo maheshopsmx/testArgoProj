@@ -19,7 +19,7 @@ spec:
     name: oes-visibility
   strategy:
     blueGreen:
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
       activeService: oes-visibility-stable
       previewService: oes-visibility-preview
       prePromotionAnalysis:

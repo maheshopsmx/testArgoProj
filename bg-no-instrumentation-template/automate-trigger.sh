@@ -25,13 +25,10 @@ sed -i "s#GIT-REPO#$gitrepo#g" autotrigger.yaml
 sed -i "s#GIT-BRANCH#$gitrevision#g" autotrigger.yaml
 
 sed -i "s#PREVIEW-NS#$pns#g" autotrigger.yaml
-
+rm -rf trigger-job.yaml
 echo 
 
 echo  commit the created file autotrigger.yaml into the github repo, in the same folder as where the preview application yamls are present
 echo  go to argocd ui and sync the preview application.
-echo go to the argocd ui and sync the analysis application <applicationName> , check if an analysis is triggered
-
-
-
+echo go to the argocd ui and sync the analysis application $app, check if an analysis is triggered
 

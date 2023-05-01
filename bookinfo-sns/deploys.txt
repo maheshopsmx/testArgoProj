@@ -1,0 +1,4 @@
+./details-deployment.yaml
+./productpage-deployment.yaml
+./ratings-deployment.yaml
+./reviews-deployment.yaml

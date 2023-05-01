@@ -1,0 +1,28 @@
+kind: AnalysisTemplate
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: DEPLOY-NAME
+spec:
+  args:
+    - name: preview-hash
+    - name: baseline-hash
+    - name: servicename
+  metrics:
+    - name: single-ns-analysis
+      count: 1
+      initialDelay: 120s
+      provider:
+        opsmx:
+          application: bookinfo-sns
+          user: admin
+          lifetimeMinutes: 3
+          threshold:
+            pass: 80
+            marginal: 60
+          services:
+          - serviceName: "{{args.servicename}}"
+            metricTemplateName: prometheus-health-validator
+            metricTemplateVersion: "v5.0"
+            metricScopeVariables: "${namespace_key},${pod_key},${app_name}"
+            baselineMetricScope: "bookinfo-sns,.*{{args.baseline-hash}}.*,APP-LABEL" 
+            canaryMetricScope: "bookinfo-sns,.*{{args.preview-hash}}.*,APP-LABEL"

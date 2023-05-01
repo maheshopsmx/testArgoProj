@@ -1,6 +1,6 @@
           - serviceName: SERVICENAME
             metricTemplateName: for-apps-noinstr
-            metricTemplateVersion: "v1.0"
-            metricScopeVariables: "${namespace_key},${container_key}"
-            baselineMetricScope: "{{args.baseline-ns}},CONTAINERNAME"
-            canaryMetricScope: "{{args.preview-ns}},CONTAINERNAME"
+            metricTemplateVersion: "v6CONTAINERNAME.0"
+            metricScopeVariables: "${namespace_key},${container_key},${pod_key}"
+            baselineMetricScope: "{{args.baseline-ns}},CONTAINERNAME,CONTAINERNAME"
+            canaryMetricScope: "{{args.preview-ns}},CONTAINERNAME,CONTAINERNAME"

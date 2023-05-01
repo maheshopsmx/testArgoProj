@@ -22,6 +22,17 @@ cd <mygithubreponame>
 curl https://raw.githubusercontent.com/gopaljayanthi/testArgoProj/main/bg-no-instrumentation-template/start.sh -o start.sh
 chmod +x start.sh
 ./start.sh
+
+replace the appplication name in template.yaml in the root directory  to the base line argocd application nase 
+      provider:
+        opsmx:
+          application: bookinfo-bl ### REPLACE
+
+Replace thse two vaules to correct values from the ISD UI https://<ISD URL>/ui/setup/analysisTemplates
+
+            metricTemplateName: for-apps-noinstr ### REPLACE
+            metricTemplateVersion: "v1.0"        ### REPLACE
+
 ===========================================================================================
 section B. To create yaml files from templates and commit to github repo
 
@@ -36,8 +47,6 @@ Steps:
 run
 chmod +x create.sh
 ./create.sh <applicationName> <stable-ns> <preview-ns> <isd-ns>
-3. login to argocd host $argocdhost and look for application <applicationName> and sync it
-
 applicationName = usersupplied name, with which a folder is created which will be later committed to this github repo, a namespace and an argocd application will be created
 stable-ns: namespace where the stable version of application is running
 preview-ns: namespace  where the version being previewed before promoting as stable exists

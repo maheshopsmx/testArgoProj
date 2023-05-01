@@ -19,7 +19,7 @@ spec:
     name: oes-audit-client
   strategy:
     blueGreen:
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
       activeService: oes-audit-client-stable
       previewService: oes-audit-client-preview
       prePromotionAnalysis:

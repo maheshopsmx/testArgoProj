@@ -1,0 +1,130 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: github-autopilot-push-v4.1
+spec:
+  template:
+    serviceAccountName: operate-workflow-sa
+  dependencies:
+    - name: test-dep
+      eventSourceName: github-analytics
+      eventName: analytics
+      filters:
+        data:
+          # Name of the event that triggered the delivery: [pull_request, push, yadayadayada]
+          # https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads
+          - path: body.X-GitHub-Event
+            type: string
+            value:
+              - push
+          - path: body.ref
+            type: string
+            value:
+              - refs/heads/v4.1
+          - path: "[body.commits.#.modified.#(%\"*canary-codebase*\")#,body.commits.#.added.#(%\"*canary-codebase*\")#,body.commits.#.removed.#(%\"*canary-codebase*\")#]"
+            type: string
+            value:
+              - "(\\bcanary-codebase/*)"
+  triggers:
+    - template:
+        name: github-push-workflow-trigger
+        k8s:
+          operation: create
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: push-trigger-jenkins-
+              spec:
+                arguments:
+                  parameters:
+                    - name: repo
+                    - name: user
+                entrypoint: git
+                templates:
+                  - name: git
+                    steps:
+                      - - name: curl
+                          template: curl
+                  - container:
+                      args:
+                        - >-
+                          cd /usr/src; 
+                          export repo="{{workflow.parameters.repo}}" ; 
+                          export branch="v4.1" ; 
+                          export user="{{workflow.parameters.user}}";
+                          echo $repo is the repo;
+                          echo $branch is gitbranch;
+                          echo $user is the user;
+                          gitdir=$(echo $repo | sed 's/.git$//' | sed 's/\// /g' | awk '{print $NF}');
+                           echo $gitdir is gitrepo; 
+                          curl -s -i -u $secret -X POST "https://jenkins.opsmx.net:8181/jenkins/job/Dev-autopilot-forargo/buildWithParameters?token=argocd-jenkins-token&BRANCHNAME=origin/$branch&TAGPREFIX=$branch" -o /tmp/temp.out ; 
+                          if [  $? -eq 0 ];
+                           then echo build succeeded;
+                           else echo build failed; exit 1;
+                          fi;
+                          gitowner=opsmx; 
+                          echo commenting on $gitowner $gitdir ;
+                          tempurl=$(cat /tmp/temp.out | grep ^Location | awk '{print $2}'| tr -d '\r');
+                          if [ -z "$tempurl" ];
+                           then
+                          echo failed to trigger build;
+                          exit 1;
+                          fi;
+                          apiurl=$(echo "$tempurl"api/xml);
+                          echo getting build number from $apiurl;
+
+
+                          while true ;
+                          do
+                          if [ -z "$buildurl" ];
+                           then 
+                          sleep 5;
+                          echo still waiting for build to be queued;
+                          curl -s -u $secret "$apiurl" -o /tmp/temp.xml;
+                          buildurl=$(xmllint --xpath 'string(/leftItem/executable/url)' /tmp/temp.xml);
+                           else
+                          break;
+                          fi;
+                          done;
+                          echo from jenkins $buildurl is buildurl;
+                          echo build started;
+                          argocdurl='https://argocd411.aoa.oes.opsmx.org/applications/dev412?view=tree&resource=kind%3AAnalysisRun%2Chealth%3AProgressing';
+                          text="Message from argoevents: $user committed this to v4.1 which triggered this build $buildurl. An analysis will be triggered soon at $argocdurl";
+                          curl -X POST -H "Content-type: application/json" --data '{"text":"'"$text"'"}' "https://hooks.slack.com/services/$slacksecret";
+                          #curl -s -u ${gitcreds} -X POST "https://api.github.com/repos/${gitowner}/${gitdir}/issues/${gitprnum}/comments" -H "Content-type: application/json" -d '{"body":"This PR successfully triggered this build '$buildurl'"}'; 
+                           if [  $? -eq 0 ]; then
+                          echo post succeeded; else echo post failed; fi;
+                      command:
+                        - bash
+                        - '-c'
+                      env:
+                        - name: gitcreds
+                          valueFrom:
+                            secretKeyRef:
+                              key: gitcreds
+                              name: gitcreds
+                        - name: secret
+                          valueFrom:
+                            secretKeyRef:
+                              key: creds
+                              name: jenkins-secret
+                        - name: slacksecret
+                          valueFrom:
+                            secretKeyRef:
+                              key: slacksecret
+                              name: slacksecret
+                      image: 'quay.io/opsmxpublic/maven-java-xmllint:v1'
+                    name: curl
+          parameters:
+            - src:
+                dependencyName: test-dep
+                dataKey: body.repository.name
+              dest: spec.arguments.parameters.0.value
+            - src:
+                dependencyName: test-dep
+                dataKey: body.pusher.name
+              dest: spec.arguments.parameters.1.value
+      retryStrategy:
+        steps: 3

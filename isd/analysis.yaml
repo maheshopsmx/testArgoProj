@@ -10,19 +10,18 @@ spec:
   metrics:
     - name: isd-analysis-bg-v1
       count: 1
-      initialDelay: 120s
+      initialDelay: 150s
       provider:
         opsmx:
           application: isd411
           user: admin
-          lifetimeMinutes: 3
+          lifetimeMinutes: 4
           threshold:
-            pass: 80
-            marginal: 60
+            pass: 90
+            marginal: 85
           services:
           - serviceName: "{{args.servicename}}"
-            metricTemplateName: prometheus-health-validator
-            metricTemplateVersion: "v5.0"
+            metricTemplateName: argometricnewtemplate
             metricScopeVariables: "${namespace_key},${pod_key},${app_name}"
             baselineMetricScope: "isd411,.*{{args.baseline-hash}}.*,oes" 
             canaryMetricScope: "isd411,.*{{args.preview-hash}}.*,oes"

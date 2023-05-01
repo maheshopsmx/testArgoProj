@@ -19,13 +19,14 @@ spec:
     name: oes-dashboard
   strategy:
     blueGreen:
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
       activeService: oes-dashboard-stable
       previewService: oes-dashboard-preview
       prePromotionAnalysis:
         templates:
         - templateName: isd-analysis-bg-v1
-        - templateName: load-executor-job
+        - templateName: load-executor-jmeter-job
+        #- templateName: load-executor-job
         args:
         - name: baseline-hash
           valueFrom:
